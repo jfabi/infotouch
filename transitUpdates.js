@@ -2,14 +2,20 @@
 
 //  MBTA service predictions (updates once every 30 seconds)
 
-var listOfStops = '&filter[stop]=' + '70069,70070,72,102,24482,24489,2448,1406,1423'
-var listOfRoutes = '&filter[route]=' + 'Red,1,64,68,69,83'
+var stopsFilter = '';
+if (listOfStops != '') {
+    stopsFilter = '&filter[stop]=' + listOfStops;
+}
+var routesFilter = '';
+if (listOfRoutes != '') {
+    routesFilter = '&filter[route]=' + listOfRoutes;
+}
         
 var serviceUpdate = function nextServiceUpdate() {
 
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://api-v3.mbta.com/predictions?include=trip&sort=departure_time" + listOfStops + listOfRoutes,
+            url : "https://api-v3.mbta.com/predictions?include=trip&sort=departure_time" + stopsFilter + routesFilter,
             dataType : "json",
             success : function(parsed_json) {
 
@@ -32,6 +38,7 @@ var serviceUpdate = function nextServiceUpdate() {
                     if (allPredictions[i]['attributes']['departure_time'] == null) {
                         continue;
                     }
+                    var stopId = allPredictions[i]['relationships']['stop']['data']['id'];
                     var routeId = allPredictions[i]['relationships']['route']['data']['id'];
                     var tripId = allPredictions[i]['relationships']['trip']['data']['id'];
                     var headsign = infoAboutTrips[tripId]['headsign'];
@@ -40,6 +47,9 @@ var serviceUpdate = function nextServiceUpdate() {
                     }
                     var departure = new Date(allPredictions[i]['attributes']['departure_time']);
                     var rawCountdown = (departure.getTime() - Date.now()) / 1000;
+                    if (minimumWalkingMinutes[stopId] > Math.round(rawCountdown/60)) {
+                        continue;
+                    }
                     var countdown = 'Err';
                     if (rawCountdown < 0) {
                         countdown = 'BRD';
@@ -55,7 +65,7 @@ var serviceUpdate = function nextServiceUpdate() {
                     htmlForPredictions += '</span><br/>';
                 }
 
-                document.getElementById("transit-predictions").innerHTML = htmlForPredictions;
+                document.getElementById('transit-predictions').innerHTML = htmlForPredictions;
             }
         });
     });
@@ -63,7 +73,7 @@ var serviceUpdate = function nextServiceUpdate() {
 };
 
 serviceUpdate();
-setInterval(serviceUpdate,10000);
+setInterval(serviceUpdate,30000);
 
 var beingClicked = false;
 var longpress = 500;
