@@ -78,8 +78,6 @@ var serviceUpdate = function nextServiceUpdate() {
                     } else {
                         countdown = Math.round(rawCountdown/60) + 'm';
                     }
-                    console.log(textColor)
-                    console.log(backgroundColor)
                     htmlForPredictions += '<span class="prediction">'
                     htmlForPredictions += '<span class="route" style="color: #' + textColor;
                     htmlForPredictions += '; background-color: #' + backgroundColor + '">&nbsp;';
