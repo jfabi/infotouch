@@ -2,7 +2,7 @@
 
 //  NWS alerts (updates once every 120 seconds)
         
-var serviceUpdate = function nextServiceUpdate() {
+var severeWeatherUpdate = function nextServiceUpdate() {
 
     jQuery(document).ready(function($) {
         $.ajax({
@@ -27,7 +27,7 @@ var serviceUpdate = function nextServiceUpdate() {
                     description = alert['description'] + ' ' + alert['instruction'];
 
                     htmlForAlerts += '<h2 class="weatherAlert" style="color: white; background-color: red">'
-                    htmlForAlerts += '<span class="alertType">';
+                    htmlForAlerts += '<span class="weatherAlertType">';
                     htmlForAlerts += alertName + '</span>';
                     htmlForAlerts += '<span class="alertExpire"> until ' + expiresDay + ' ';
                     htmlForAlerts += expiresHours + ':' + expiresMins + '</span>'
@@ -41,9 +41,5 @@ var serviceUpdate = function nextServiceUpdate() {
 
 };
 
-serviceUpdate();
-setInterval(serviceUpdate,120000);
-
-var beingClicked = false;
-var longpress = 500;
-var start;
+severeWeatherUpdate();
+setInterval(severeWeatherUpdate,120000);

@@ -11,7 +11,7 @@ if (listOfRoutes != '') {
     routesFilter = '&filter[route]=' + listOfRoutes;
 }
         
-var serviceUpdate = function nextServiceUpdate() {
+var transitPredictionsUpdate = function nextServiceUpdate() {
 
     jQuery(document).ready(function($) {
         $.ajax({
@@ -25,6 +25,7 @@ var serviceUpdate = function nextServiceUpdate() {
                 var infoAboutTrips = {};
                 var infoAboutRoutes = {};
                 var htmlForPredictions = '';
+                var htmlForAlerts = '';
 
                 for (i = 0; i < allIncluded.length; i++) {
                     if (allIncluded[i]['type'] == 'trip') {
@@ -94,9 +95,5 @@ var serviceUpdate = function nextServiceUpdate() {
 
 };
 
-serviceUpdate();
-setInterval(serviceUpdate,30000);
-
-var beingClicked = false;
-var longpress = 500;
-var start;
+transitPredictionsUpdate();
+setInterval(transitPredictionsUpdate,30000);
