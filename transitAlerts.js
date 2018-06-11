@@ -1,6 +1,8 @@
 // Written by Joshua Fabian, jfabi@alum.mit.edu
 
-//  MBTA service predictions (updates once every 30 seconds)
+//  MBTA alerts (updates once every 120 seconds)
+
+var staleAlertThreshold = 432000000;
 
 var stopsFilter = '';
 if (listOfStops != '') {
@@ -13,12 +15,29 @@ if (listOfRoutes != '') {
 
 var causeDisplayLookup = {
     UNKNOWN_CAUSE: '',
+    AUTOS_IMPEDING_SERVICE: 'due to impeding auto',
     POLICE_ACTION: 'due to police action',
+    POLICE_ACTIVITY: 'due to police action',
     TRAFFIC: 'due to traffic',
+    CONGESTION: 'due to congestion',
     CONSTRUCTION: 'due to construction',
     MAINTENANCE: 'due to maintenance',
     SPECIAL_EVENT: 'due to special event',
-    FIRE: 'due to fire'
+    FIRE: 'due to fire',
+    ACCIDENT: 'due to crash',
+    DEMONSTRATION: 'due to unrest',
+    DISABLED_BUS: 'due to disabled bus',
+    DISABLED_TRAIN: 'due to disabled train',
+    HEAVY_RIDERSHIP: 'due to heavy crowds',
+    MECHANICAL_PROBLEM: 'due to mech issue',
+    MEDICAL_EMERGENCY: 'due to EMS activity',
+    POWER_PROBLEM: 'due to power problem',
+    SEVERE_WEATHER: 'due to weather',
+    SIGNAL_PROBLEM: 'due to signal issue',
+    SWITCH_PROBLEM: 'due to switch issue',
+    TECHNICAL_PROBLEM: 'due to mech issue',
+    UNRULY_PASSENGER: 'due to unrest',
+    WEATHER: 'due to weather'
 };
 
 var effectDisplayLookup = {
@@ -73,7 +92,6 @@ var transitAlertsUpdate = function nextServiceUpdate() {
 
                 for (i = 0; i < allAlerts.length; i++) {
                     var alertId = allAlerts[i]['id'];
-                    console.log(allAlerts[i]['attributes']['informed_entity']);
                     var routeId = allAlerts[i]['attributes']['informed_entity'][0]['route'];
                     var cause = causeDisplayLookup[allAlerts[i]['attributes']['cause']];
                     var effect = allAlerts[i]['attributes']['effect'];
@@ -84,12 +102,41 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     newAlert = {};
                     newAlert['routeId'] = routeId;
                     newAlert['cause'] = cause;
+                    newAlert['causeDisplay'] = cause;
                     newAlert['effect'] = effect;
                     newAlert['effectDisplay'] = effectDisplay;
                     newAlert['description'] = header;
                     newAlert['severity'] = severity;
                     newAlert['severityDisplay'] = severityDisplay;
-                    infoAboutAlerts.push(newAlert);
+                    if (allAlerts[i]['attributes']['lifecycle'] != 'NEW' && allAlerts[i]['attributes']['lifecycle'] != 'ONGOING') {
+                        continue;
+                    }
+                    for (j = 0; j < allAlerts[i]['attributes']['active_period'].length; j++) {
+                        // Remove stale alerts having currently-active period more than 5 days running
+
+                        var currentPeriod = allAlerts[i]['attributes']['active_period'][j];
+                        if (currentPeriod['end'] == null) {
+                            var startTime = (new Date(currentPeriod['start'])).getTime();
+                            if (startTime < Date.now() - staleAlertThreshold) {
+                                continue;
+                            } else {
+                                infoAboutAlerts.push(newAlert);
+                                break;
+                            }
+                            // IF START TIME IS MORE THAN 5 DAYS BEFORE Date.now(), CONTINUE
+                        } else {
+                            var startTime = (new Date(currentPeriod['start'])).getTime();
+                            var endTime = (new Date(currentPeriod['end'])).getTime();
+                            if (startTime > Date.now() || endTime < Date.now()) {
+                                continue;
+                            } else if (startTime < Date.now() - staleAlertThreshold) {
+                                continue;
+                            } else {
+                                infoAboutAlerts.push(newAlert);
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 for (i = 0; i < infoAboutAlerts.length; i++) {
@@ -112,7 +159,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     if (!causeDisplay) {
                         causeDisplay = '';
                     }
-                    if (!severityDisplay || causeDisplay != 'Delays') {
+                    if (!severityDisplay || effectDisplay != 'Delays') {
                         severityDisplay = '';
                     }
                     var description = infoAboutAlerts[i]['description'];
