@@ -9,3 +9,4 @@ var minimumWalkingMinutes = {
 var listOfStops = '75,97';
 var listOfRoutes = '1,701';
 var weatherPoint = '42.35824,-71.09281';
+var weatherGrid = 'BOX/66,78';
