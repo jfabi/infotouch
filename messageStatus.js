@@ -125,6 +125,7 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
     }
 };
 
+twitterGetLatestStatuses();
 setInterval(twitterGetLatestStatuses,15000);
 
 

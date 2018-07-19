@@ -35,7 +35,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
         tempString = currentTempF + '&deg;F'
     }
 
-    htmlForCurrentStats += '<td style="width: 28%; text-align: right">' + tempString + ' ' + currentWeather + '</td>'
+    htmlForCurrentStats += '<td style="width: 28%; text-align: right"><a onclick="showWeatherForecast()" href="javascript:void(0);">' + tempString + ' ' + currentWeather + '</a></td>'
     htmlForCurrentStats += '</tr></table>'
 
     document.getElementById('current-stats').innerHTML = htmlForCurrentStats;

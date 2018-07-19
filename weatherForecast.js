@@ -69,5 +69,18 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
 
 };
 
+var showWeatherForecast = function showWeatherForecast() {
+
+    var weatherForecastDiv = document.getElementById('weather-forecast');
+
+    if (weatherForecastDiv.style.display == 'none') {
+        weatherForecastDiv.style.display = 'inline';
+    } else {
+        weatherForecastDiv.style.display = 'none';
+        console.log('You closed it up!')
+        // weatherForecastDiv.innerHTML = '';
+    }
+};
+
 weatherForecastUpdate();
 setInterval(weatherForecastUpdate,600000);
