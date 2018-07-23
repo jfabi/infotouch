@@ -31,7 +31,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
         var day = currentTime.getDate();
         var dayOfWeek = currentTime.getDay();
         var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        htmlForCurrentStats += '<td style="width: 28%; text-align: center">' + daysOfWeek[dayOfWeek] + ' ' + dayOfWeek + '</td>'
+        htmlForCurrentStats += '<td style="width: 28%; text-align: center">' + daysOfWeek[dayOfWeek] + ' ' + day + '</td>'
         tempString = currentTempF + '&deg;F'
     }
 
