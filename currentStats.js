@@ -24,6 +24,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
         if (minute < 10) {
             minute = "0" + minute;
         }
+
         htmlForCurrentStats += '<td style="width: 28%; text-align: center">' + hour + ':' + minute + '</td>'
         tempString = currentTempC + '&deg;C'
     } else {

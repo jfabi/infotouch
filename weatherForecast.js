@@ -62,7 +62,12 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
                     htmlForForecasts += '</span><br/>';
                 }
 
-                document.getElementById('weather-forecast').innerHTML = htmlForForecasts;
+                if (document.getElementById('weather-forecast') == null) {
+                    $('#main').append('<div id="weather-forecast" style="display: none"></div>');
+                    document.getElementById('weather-forecast').innerHTML = htmlForForecasts;
+                } else {
+                    document.getElementById('weather-forecast').innerHTML = htmlForForecasts;
+                }
             }
         });
     });

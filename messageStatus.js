@@ -40,10 +40,6 @@ var twitterGetLatestStatuses = function twitterGetLatestStatuses() {
         'statuses_userTimeline',
         twitterParams,
         function (reply, rate, err) {
-            console.log('OUTPUTS FROM TWITTER !!!!')
-            console.log(reply);
-            console.log(err);
-
             var mostRecentDisplayText = '';
             var mostRecentDisplayId = '';
             var mostRecentAnnounceText = '';
@@ -100,18 +96,34 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         htmlForMessageStatus += '<h1 class="message-status" style="color: ' + textColor;
         htmlForMessageStatus += '; background-color: ' + backgroundColor + '">' + displayText;
         htmlForMessageStatus += '</h1>';
-        document.getElementById('message-status-body').innerHTML = htmlForMessageStatus;
+        
+        if (document.getElementById('message-status') == null) {
+            $('#main').append('<div id="message-status"><span id="message-status-body"></span><span id="message-status-ago"></span></div>');
+            document.getElementById('message-status-body').innerHTML = htmlForMessageStatus;
+            $('.rotation-group').slick('slickAdd', '#message-status');
+        } else {
+            document.getElementById('message-status-body').innerHTML = htmlForMessageStatus;
+        }
+
         htmlForMessageAgo = '';
         htmlForMessageAgo = '<h4 class="message-status" style="color: ' + textColor;
         htmlForMessageAgo += '; background-color: ' + backgroundColor + '">' + timeSinceTweetText;
         htmlForMessageAgo += '</h4>';
+
         document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
     } else {
         htmlForMessageAgo = '';
         htmlForMessageAgo = '<h4 class="message-status" style="color: ' + textColor;
         htmlForMessageAgo += '; background-color: ' + backgroundColor + '">' + timeSinceTweetText;
         htmlForMessageAgo += '</h4>';
-        document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
+
+        if (document.getElementById('message-status') == null) {
+            $('#main').append('<div id="message-status"><span id="message-status-body"></span><span id="message-status-ago"></span></div>');
+            document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
+            $('.rotation-group').slick('slickAdd', '#message-status');
+        } else {
+            document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
+        }
     }
 
     if ((lastAnnounceId != announceId || lastAnnounceText != announceText) && announceText != '') {

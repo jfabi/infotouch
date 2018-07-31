@@ -34,7 +34,18 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     htmlForAlerts += '</h2>' + description + '<br/><br/>';
                 }
 
-                document.getElementById('severe-weather').innerHTML = htmlForAlerts;
+                if (document.getElementById('severe-weather') == null && htmlForAlerts != '') {
+                    // Create object and add to current rotation
+                    $('#main').append('<div id="severe-weather"></div>');
+                    document.getElementById('severe-weather').innerHTML = htmlForAlerts;
+                    $('.rotation-group').slick('slickAdd', '#severe-weather');
+                } else if (htmlForAlerts != '') {
+                    // Update existing object
+                    document.getElementById('severe-weather').innerHTML = htmlForAlerts;
+                } else if (document.getElementById('severe-weather') != null) {
+                    // Remove object from current rotation
+                    $('.rotation-group').slick('slickRemove', $('#severe-weather').attr('data-slick-index'))
+                }
             }
         });
     });

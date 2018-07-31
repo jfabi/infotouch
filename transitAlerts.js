@@ -179,7 +179,16 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     htmlForAlerts += '</h2>' + description + '<br/><br/>';
                 }
 
-                document.getElementById('transit-alerts').innerHTML = htmlForAlerts;
+                if (document.getElementById('transit-alerts') == null && htmlForAlerts != '') {
+                    $('#main').append('<div id="transit-alerts"></div>');
+                    document.getElementById('transit-alerts').innerHTML = htmlForAlerts;
+                    $('.rotation-group').slick('slickAdd', '#transit-alerts');
+                } else if (htmlForAlerts != '') {
+                    document.getElementById('transit-alerts').innerHTML = htmlForAlerts;
+                } else if (document.getElementById('transit-alerts') != null) {
+                    // Remove object from current rotation
+                    $('.rotation-group').slick('slickRemove', $('#transit-alerts').attr('data-slick-index'))
+                }
             }
         });
     });
