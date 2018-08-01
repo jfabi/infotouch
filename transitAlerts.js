@@ -185,9 +185,9 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     $('.rotation-group').slick('slickAdd', '#transit-alerts');
                 } else if (htmlForAlerts != '') {
                     document.getElementById('transit-alerts').innerHTML = htmlForAlerts;
-                } else if (document.getElementById('transit-alerts') != null) {
+                } else if (document.getElementById('transit-alerts') != null && $('#transit-alerts').attr('data-slick-index') != null) {
                     // Remove object from current rotation
-                    $('.rotation-group').slick('slickRemove', $('#transit-alerts').attr('data-slick-index'))
+                    $('.rotation-group').slick('slickRemove', $('#transit-alerts').attr('data-slick-index'));
                 }
             }
         });

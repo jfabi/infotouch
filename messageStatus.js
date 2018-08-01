@@ -120,7 +120,6 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         if (document.getElementById('message-status') == null) {
             $('#main').append('<div id="message-status"><span id="message-status-body"></span><span id="message-status-ago"></span></div>');
             document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
-            $('.rotation-group').slick('slickAdd', '#message-status');
         } else {
             document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
         }

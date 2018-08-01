@@ -42,7 +42,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                 } else if (htmlForAlerts != '') {
                     // Update existing object
                     document.getElementById('severe-weather').innerHTML = htmlForAlerts;
-                } else if (document.getElementById('severe-weather') != null) {
+                } else if (document.getElementById('severe-weather') != null && $('#severe-weather').attr('data-slick-index') != null) {
                     // Remove object from current rotation
                     $('.rotation-group').slick('slickRemove', $('#severe-weather').attr('data-slick-index'))
                 }

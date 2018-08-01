@@ -125,12 +125,8 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                 if (document.getElementById('transit-predictions') == null && htmlForPredictions != '') {
                     $('#main').append('<div id="transit-predictions"></div>');
                     document.getElementById('transit-predictions').innerHTML = htmlForPredictions;
-                    $('.rotation-group').slick('slickAdd', '#transit-predictions');
                 } else if (htmlForPredictions != '') {
                     document.getElementById('transit-predictions').innerHTML = htmlForPredictions;
-                } else if (document.getElementById('transit-predictions') != null) {
-                    // Remove object from current rotation
-                    $('.rotation-group').slick('slickRemove', $('#transit-predictions').attr('data-slick-index'))
                 }
             }
         });
