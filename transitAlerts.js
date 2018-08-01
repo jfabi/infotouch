@@ -3,6 +3,9 @@
 //  MBTA alerts (updates once every 120 seconds)
 
 var staleAlertThreshold = 432000000;
+var currentTransitAlertsIds = [];
+var displayAlertsMinor = true;
+var displayAlertsSevere = true;
 
 var stopsFilter = '';
 if (listOfStops != '') {
@@ -59,6 +62,16 @@ var severityDisplayLookup = {
     8: 'of 30m+',
     9: 'of 60m+'
 }
+
+var severityCategoryLookup = {
+    3: 'minor',
+    4: 'moderate',
+    5: 'moderate',
+    6: 'moderate',
+    7: 'severe',
+    8: 'severe',
+    9: 'severe'
+}
         
 var transitAlertsUpdate = function nextServiceUpdate() {
 
@@ -73,7 +86,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                 var predictions = [];
                 var infoAboutRoutes = {};
                 var infoAboutAlerts = [];
-                var htmlForAlerts = '';
+                var parsedAlerts = [];
 
                 for (i = 0; i < allIncluded.length; i++) {
                     if (allIncluded[i]['type'] == 'route') {
@@ -99,7 +112,9 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     var header = allAlerts[i]['attributes']['header'];
                     var severity = allAlerts[i]['attributes']['severity'];
                     var severityDisplay = severityDisplayLookup[severity];
+                    var severityCategory = severityCategoryLookup[severity];
                     newAlert = {};
+                    newAlert['alertId'] = alertId;
                     newAlert['routeId'] = routeId;
                     newAlert['cause'] = cause;
                     newAlert['causeDisplay'] = cause;
@@ -108,6 +123,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     newAlert['description'] = header;
                     newAlert['severity'] = severity;
                     newAlert['severityDisplay'] = severityDisplay;
+                    newAlert['severityCategory'] = severityCategory;
                     if (allAlerts[i]['attributes']['lifecycle'] != 'NEW' && allAlerts[i]['attributes']['lifecycle'] != 'ONGOING') {
                         continue;
                     }
@@ -169,25 +185,69 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     if (effectDisplay != 'Delays' && effectDisplay != 'Bus shuttle' && effectDisplay != 'Diversion') {
                         continue;
                     }
-                    htmlForAlerts += '<h2 class="transitAlert" style="color: white; background-color: red">'
-                    htmlForAlerts += '<span class="transitAlertType">';
-                    htmlForAlerts += '<span class="route" style="color: #' + textColor;
-                    htmlForAlerts += '; background-color: #' + backgroundColor + '">&nbsp;';
-                    htmlForAlerts += routeDisplay + '&nbsp;</span>&nbsp;';
-                    htmlForAlerts += '<span class="transitAlertTitle">' + effectDisplay + ' ';
-                    htmlForAlerts += severityDisplay + ' ' + causeDisplay + '</span>'
-                    htmlForAlerts += '</h2>' + description + '<br/><br/>';
+                    if (infoAboutAlerts[i]['severityCategory'] == 'severe' && displayAlertsSevere == false && displayAlertsMinor == false) {
+                        continue;
+                    }
+                    if (infoAboutAlerts[i]['severityCategory'] != 'severe' && displayAlertsMinor == false) {
+                        continue;
+                    }
+                    htmlForAlert = ''; 
+                    htmlForAlert += '<h2 class="transitAlert" style="color: white; background-color: red">'
+                    htmlForAlert += '<span class="transitAlertType">';
+                    htmlForAlert += '<span class="route" style="color: #' + textColor;
+                    htmlForAlert += '; background-color: #' + backgroundColor + '">&nbsp;';
+                    htmlForAlert += routeDisplay + '&nbsp;</span>&nbsp;';
+                    htmlForAlert += '<span class="transitAlertTitle">' + effectDisplay + ' ';
+                    htmlForAlert += severityDisplay + ' ' + causeDisplay + '</span>'
+                    htmlForAlert += '</h2>' + description + '<br/><br/>';
+
+                    parsedAlert = {};
+                    parsedAlert['alertId'] = infoAboutAlerts[i]['alertId'];
+                    parsedAlert['severityCategory'] = infoAboutAlerts[i]['severityCategory'];
+                    parsedAlert['html'] = htmlForAlert;
+                    parsedAlerts.push(parsedAlert);
                 }
 
-                if (document.getElementById('transit-alerts') == null && htmlForAlerts != '') {
-                    $('#main').append('<div id="transit-alerts"></div>');
-                    document.getElementById('transit-alerts').innerHTML = htmlForAlerts;
-                    $('.rotation-group').slick('slickAdd', '#transit-alerts');
-                } else if (htmlForAlerts != '') {
-                    document.getElementById('transit-alerts').innerHTML = htmlForAlerts;
-                } else if (document.getElementById('transit-alerts') != null && $('#transit-alerts').attr('data-slick-index') != null) {
-                    // Remove object from current rotation
-                    $('.rotation-group').slick('slickRemove', $('#transit-alerts').attr('data-slick-index'));
+                for (i = 0; i < parsedAlerts.length; i++) {
+                    var divId = 'transit-alert-' + parsedAlerts[i]['alertId'];
+                    console.log('Currently working with div of ID:')
+                    console.log(divId)
+
+                    if (document.getElementById(divId) == null && parsedAlerts != '') {
+                        $('#main').append('<div id=' + divId + '></div>');
+                        currentTransitAlertsIds.push(parsedAlerts[i]['alertId']);
+                        document.getElementById(divId).innerHTML = parsedAlerts[i]['html'];
+                        $('.rotation-group').slick('slickAdd', '#' + divId);
+                    } else if (parsedAlerts != '') {
+                        document.getElementById(divId).innerHTML = parsedAlerts[i]['html'];
+                    } else if (document.getElementById(divId) != null && $('#' + divId).attr('data-slick-index') != null) {
+                        // Remove object from current rotation
+                        $('.rotation-group').slick('slickRemove', $('#' + divId).attr('data-slick-index'));
+                    }
+                }
+
+                // Check if all currentTransitAlertsDivIds are still active alerts
+                console.log(currentTransitAlertsIds);
+
+                currentTransitAlertsIdsCopy = Object.assign([], currentTransitAlertsIds);
+
+                console.log(currentTransitAlertsIdsCopy);
+                for (i = 0; i < currentTransitAlertsIdsCopy.length; i++) {
+                    var alertStillActive = false;
+                    for (j = 0; j < parsedAlerts.length; j++) {
+                        if (parsedAlerts[j]['alertId'] == currentTransitAlertsIdsCopy[i]) {
+                            alertStillActive = true;
+                            break;
+                        }
+                    }
+                    if (alertStillActive == false) {
+                        // This means alert is not active: remove from list, rotation, html
+                        if ($('#transit-alert-' + parsedAlerts[j]['alertId']).attr('data-slick-index') != null) {
+                            $('.rotation-group').slick('slickRemove', $('#transit-alert-' + parsedAlerts[j]['alertId']).attr('data-slick-index'));
+                        }
+                        document.getElementById('transit-alert-' + parsedAlerts[j]['alertId']).remove();
+                        currentTransitAlertsIds.splice(i, 1);
+                    }
                 }
             }
         });
@@ -197,7 +257,3 @@ var transitAlertsUpdate = function nextServiceUpdate() {
 
 transitAlertsUpdate();
 setInterval(transitAlertsUpdate,120000);
-
-var beingClicked = false;
-var longpress = 500;
-var start;

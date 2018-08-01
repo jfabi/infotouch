@@ -23,48 +23,51 @@ var rotationUpdate = function rotationUpdate() {
 
     var transitPredictionsDiv = document.getElementById('transit-predictions');
     if (transitPredictionsDiv != null) {
-	    if (weekdayPredict || sundayPredict) {
-	    	slickIndex = $('transit-predictions').attr('data-slick-index');
-	    	console.log("Mode A")
-	    	console.log(slickIndex)
-	    	transitPredictionsDiv.style.display = 'inline';
-	    	if (slickIndex == null) {
-	    		$('.rotation-group').slick('slickAdd', '#transit-predictions');
-	    	}
-	    } else {
-	    	slickIndex = $('transit-predictions').attr('data-slick-index');
-	    	console.log("Mode B")
-	    	console.log(slickIndex)
-	    	transitPredictionsDiv.style.display = 'none';
-	    	if (slickIndex != null) {
-	        	$('.rotation-group').slick('slickRemove', slickIndex);
-	    	}
-	    }
+    	if (transitPredictionsDiv.children.length > 0) {
+		    if (weekdayPredict || sundayPredict) {
+		    	slickIndex = $('transit-predictions').attr('data-slick-index');
+		    	console.log("Mode A")
+		    	console.log(transitPredictionsDiv)
+		    	console.log(slickIndex)
+		    	transitPredictionsDiv.style.display = 'inline';
+		    	if (slickIndex == null) {
+		    		$('.rotation-group').slick('slickAdd', '#transit-predictions');
+		    	}
+		    } else {
+		    	slickIndex = $('transit-predictions').attr('data-slick-index');
+		    	console.log("Mode B")
+		    	console.log(transitPredictionsDiv)
+		    	console.log(slickIndex)
+		    	transitPredictionsDiv.style.display = 'none';
+		    	if (slickIndex != null) {
+		        	$('.rotation-group').slick('slickRemove', slickIndex);
+		    	}
+		    }
+		}
 	}
 
     var messageStatusDiv = document.getElementById('message-status');
     if (messageStatusDiv != null) {
-	    if (!weekdayHideTwitter) {
-	    	slickIndex = $('message-status').attr('data-slick-index');
-	    	console.log("Mode T")
-	    	console.log(slickIndex)
-	    	messageStatusDiv.style.display = 'inline';
-	    	if (slickIndex == null) {
-	    		$('.rotation-group').slick('slickAdd', '#message-status');
-	    	}
-	    } else {
-	    	slickIndex = $('message-status').attr('data-slick-index');
-	    	console.log("Mode U")
-	    	console.log(slickIndex)
-	    	messageStatusDiv.style.display = 'none';
-	    	if (slickIndex != null) {
-	        	$('.rotation-group').slick('slickRemove', slickIndex);
-	    	}
-	    }
+    	if (messageStatusDiv.children.length > 0) {
+		    if (!weekdayHideTwitter) {
+		    	slickIndex = $('message-status').attr('data-slick-index');
+		    	console.log("Mode T")
+		    	console.log(slickIndex)
+		    	messageStatusDiv.style.display = 'inline';
+		    	if (slickIndex == null) {
+		    		$('.rotation-group').slick('slickAdd', '#message-status');
+		    	}
+		    } else {
+		    	slickIndex = $('message-status').attr('data-slick-index');
+		    	console.log("Mode U")
+		    	console.log(slickIndex)
+		    	messageStatusDiv.style.display = 'none';
+		    	if (slickIndex != null) {
+		        	$('.rotation-group').slick('slickRemove', slickIndex);
+		    	}
+		    }
+		}
 	}
-
-    currentTime.getHours();
-    currentTime.getMinutes();
 };
 
 rotationUpdate();
