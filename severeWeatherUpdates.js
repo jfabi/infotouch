@@ -61,7 +61,15 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                         document.getElementById(divId).innerHTML = parsedWarnings[i]['html'];
                     } else if (document.getElementById(divId) != null && $('#' + divId).attr('data-slick-index') != null) {
                         // Remove object from current rotation
+                        document.getElementById('severe-weather-' + parsedWarnings[j]['alertId']).remove();
                         $('.rotation-group').slick('slickRemove', $('#' + divId).attr('data-slick-index'));
+                        currentWeatherWarningsIdsCopy = Object.assign([], currentWeatherWarningsIds);
+                        for (j = 0; j < currentWeatherWarningsIdsCopy.length; j++) {
+                            if (currentWeatherWarningsIdsCopy[j] == parsedWarnings[i]['alertId']) {
+                                currentWeatherWarningsIds.splice(j, 1);
+                                break;
+                            }
+                        }
                     }
                 }
 
