@@ -234,10 +234,10 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     }
                     if (alertStillActive == false) {
                         // This means alert is not active: remove from list, rotation, html
-                        if ($('#transit-alert-' + parsedAlerts[j]['alertId']).attr('data-slick-index') != null) {
-                            $('.rotation-group').slick('slickRemove', $('#transit-alert-' + parsedAlerts[j]['alertId']).attr('data-slick-index'));
+                        if ($('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index') != null) {
+                            $('.rotation-group').slick('slickRemove', $('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index'));
                         }
-                        document.getElementById('transit-alert-' + parsedAlerts[j]['alertId']).remove();
+                        document.getElementById('transit-alert-' + currentTransitAlertsIdsCopy[i]).remove();
                         currentTransitAlertsIds.splice(i, 1);
                     }
                 }

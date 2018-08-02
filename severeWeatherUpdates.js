@@ -2,6 +2,7 @@
 
 //  NWS alerts (updates once every 120 seconds)
 var currentWeatherWarningsIds = [];
+var currentSevereImmediate = false;
         
 var severeWeatherUpdate = function nextServiceUpdate() {
 
@@ -13,7 +14,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
 
                 var allAlerts = parsed_json['features'];
                 var parsedWarnings = [];
-                var currentSevereImmediate = false;
+                var currentSevereImmediateInternal = false;
 
                 for (i = 0; i < allAlerts.length; i++) {
                     alert = allAlerts[i]['properties'];
@@ -44,9 +45,11 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     parsedWarnings.push(parsedWarning);
 
                     if (parsedWarning['severity'] == 'Severe' && parsedWarning['urgency'] == 'Immediate') {
-                        currentSevereImmediate = true;
+                        currentSevereImmediateInternal = true;
                     }
                 }
+
+                currentSevereImmediate = currentSevereImmediateInternal;
 
                 for (i = 0; i < parsedWarnings.length; i++) {
                     var divId = 'severe-weather-' + parsedWarnings[i]['alertId'];
@@ -61,8 +64,8 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                         document.getElementById(divId).innerHTML = parsedWarnings[i]['html'];
                     } else if (document.getElementById(divId) != null && $('#' + divId).attr('data-slick-index') != null) {
                         // Remove object from current rotation
-                        document.getElementById('severe-weather-' + parsedWarnings[j]['alertId']).remove();
                         $('.rotation-group').slick('slickRemove', $('#' + divId).attr('data-slick-index'));
+                        document.getElementById('severe-weather-' + parsedWarnings[j]['alertId']).remove();
                         currentWeatherWarningsIdsCopy = Object.assign([], currentWeatherWarningsIds);
                         for (j = 0; j < currentWeatherWarningsIdsCopy.length; j++) {
                             if (currentWeatherWarningsIdsCopy[j] == parsedWarnings[i]['alertId']) {
@@ -87,10 +90,10 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     }
                     if (warningStillActive == false) {
                         // This means warning is not active: remove from list, rotation, html
-                        if ($('#severe-weather-' + parsedWarnings[j]['alertId']).attr('data-slick-index') != null) {
-                            $('.rotation-group').slick('slickRemove', $('#severe-weather-' + parsedWarnings[j]['alertId']).attr('data-slick-index'));
+                        if ($('#severe-weather-' + currentWeatherWarningsIdsCopy[i]).attr('data-slick-index') != null) {
+                            $('.rotation-group').slick('slickRemove', $('#severe-weather-' + currentWeatherWarningsIdsCopy[i]).attr('data-slick-index'));
                         }
-                        document.getElementById('severe-weather-' + parsedWarnings[j]['alertId']).remove();
+                        document.getElementById('severe-weather-' + currentWeatherWarningsIdsCopy[i]).remove();
                         currentWeatherWarningsIds.splice(i, 1);
                     }
                 }

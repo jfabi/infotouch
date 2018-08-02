@@ -28,7 +28,7 @@ var rotationUpdate = function rotationUpdate() {
     var transitPredictionsDiv = document.getElementById('transit-predictions');
     if (transitPredictionsDiv != null) {
     	if (transitPredictionsDiv.children.length > 0) {
-		    if (weekdayPredict || sundayPredict) {
+		    if ((weekdayPredict || sundayPredict) && currentSevereImmediate == false) {
 		    	slickIndex = $('transit-predictions').attr('data-slick-index');
 		    	console.log("Mode A")
 		    	console.log(transitPredictionsDiv)
@@ -53,7 +53,7 @@ var rotationUpdate = function rotationUpdate() {
     var messageStatusDiv = document.getElementById('message-status');
     if (messageStatusDiv != null) {
     	if (messageStatusDiv.children.length > 0) {
-		    if (!weekdayHideTwitter) {
+		    if (!weekdayHideTwitter && currentSevereImmediate == false) {
 		    	slickIndex = $('message-status').attr('data-slick-index');
 		    	console.log("Mode T")
 		    	console.log(slickIndex)
