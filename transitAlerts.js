@@ -2,10 +2,8 @@
 
 //  MBTA alerts (updates once every 120 seconds)
 
-var staleAlertThreshold = 432000000;
+var staleAlertThreshold = 800000000;
 var currentTransitAlertsIds = [];
-var displayAlertsMinor = true;
-var displayAlertsSevere = true;
 
 var stopsFilter = '';
 if (listOfStops != '') {
@@ -129,7 +127,6 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     }
                     for (j = 0; j < allAlerts[i]['attributes']['active_period'].length; j++) {
                         // Remove stale alerts having currently-active period more than 5 days running
-
                         var currentPeriod = allAlerts[i]['attributes']['active_period'][j];
                         if (currentPeriod['end'] == null) {
                             var startTime = (new Date(currentPeriod['start'])).getTime();
