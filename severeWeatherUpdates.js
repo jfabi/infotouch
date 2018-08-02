@@ -1,6 +1,7 @@
 // Written by Joshua Fabian, jfabi@alum.mit.edu
 
 //  NWS alerts (updates once every 120 seconds)
+var currentWeatherWarningsIds = [];
         
 var severeWeatherUpdate = function nextServiceUpdate() {
 
@@ -11,7 +12,8 @@ var severeWeatherUpdate = function nextServiceUpdate() {
             success : function(parsed_json) {
 
                 var allAlerts = parsed_json['features'];
-                var htmlForAlerts = '';
+                var parsedWarnings = [];
+                var currentSevereImmediate = false;
 
                 for (i = 0; i < allAlerts.length; i++) {
                     alert = allAlerts[i]['properties'];
@@ -26,25 +28,63 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     alertName = alert['event'];
                     description = alert['description'] + ' ' + alert['instruction'];
 
-                    htmlForAlerts += '<h2 class="weatherAlert" style="color: white; background-color: red">'
-                    htmlForAlerts += '<span class="weatherAlertType">';
-                    htmlForAlerts += alertName + '</span>';
-                    htmlForAlerts += '<span class="alertExpire"> until ' + expiresDay + ' ';
-                    htmlForAlerts += expiresHours + ':' + expiresMins + '</span>'
-                    htmlForAlerts += '</h2>' + description + '<br/><br/>';
+                    htmlForWarning = '';
+                    htmlForWarning += '<h2 class="weatherAlert" style="color: white; background-color: red">'
+                    htmlForWarning += '<span class="weatherAlertType">';
+                    htmlForWarning += alertName + '</span>';
+                    htmlForWarning += '<span class="alertExpire"> until ' + expiresDay + ' ';
+                    htmlForWarning += expiresHours + ':' + expiresMins + '</span>'
+                    htmlForWarning += '</h2>' + description + '<br/><br/>';
+
+                    parsedWarning = {};
+                    parsedWarning['alertId'] = alert['id'];
+                    parsedWarning['severity'] = alert['severity'];
+                    parsedWarning['urgency'] = alert['urgency'];
+                    parsedWarning['html'] = htmlForWarning;
+                    parsedWarnings.push(parsedWarning);
+
+                    if (parsedWarning['severity'] == 'Severe' && parsedWarning['urgency'] == 'Immediate') {
+                        currentSevereImmediate = true;
+                    }
                 }
 
-                if (document.getElementById('severe-weather') == null && htmlForAlerts != '') {
-                    // Create object and add to current rotation
-                    $('#main').append('<div id="severe-weather"></div>');
-                    document.getElementById('severe-weather').innerHTML = htmlForAlerts;
-                    $('.rotation-group').slick('slickAdd', '#severe-weather');
-                } else if (htmlForAlerts != '') {
-                    // Update existing object
-                    document.getElementById('severe-weather').innerHTML = htmlForAlerts;
-                } else if (document.getElementById('severe-weather') != null && $('#severe-weather').attr('data-slick-index') != null) {
-                    // Remove object from current rotation
-                    $('.rotation-group').slick('slickRemove', $('#severe-weather').attr('data-slick-index'))
+                for (i = 0; i < parsedWarnings.length; i++) {
+                    var divId = 'severe-weather-' + parsedWarnings[i]['alertId'];
+                    supressDueToSevereImmediate = (parsedWarnings[i]['severity'] != 'Severe' || parsedWarnings[i]['urgency'] != 'Immediate') && currentSevereImmediate == true
+
+                    if (document.getElementById(divId) == null && !supressDueToSevereImmediate) {
+                        $('#main').append('<div id=' + divId + '></div>');
+                        currentWeatherWarningsIds.push(parsedWarnings[i]['alertId']);
+                        document.getElementById(divId).innerHTML = parsedWarnings[i]['html'];
+                        $('.rotation-group').slick('slickAdd', '#' + divId);
+                    } else if (!supressDueToSevereImmediate) {
+                        document.getElementById(divId).innerHTML = parsedWarnings[i]['html'];
+                    } else if (document.getElementById(divId) != null && $('#' + divId).attr('data-slick-index') != null) {
+                        // Remove object from current rotation
+                        $('.rotation-group').slick('slickRemove', $('#' + divId).attr('data-slick-index'));
+                    }
+                }
+
+                // Check if all currentWeatherWarningsIds are still active warnings
+                console.log(currentWeatherWarningsIds);
+                currentWeatherWarningsIdsCopy = Object.assign([], currentWeatherWarningsIds);
+
+                for (i = 0; i < currentWeatherWarningsIdsCopy.length; i++) {
+                    var warningStillActive = false;
+                    for (j = 0; j < parsedWarnings.length; j++) {
+                        if (parsedWarnings[j]['alertId'] == currentWeatherWarningsIdsCopy[i]) {
+                            warningStillActive = true;
+                            break;
+                        }
+                    }
+                    if (warningStillActive == false) {
+                        // This means warning is not active: remove from list, rotation, html
+                        if ($('#severe-weather-' + parsedWarnings[j]['alertId']).attr('data-slick-index') != null) {
+                            $('.rotation-group').slick('slickRemove', $('#severe-weather-' + parsedWarnings[j]['alertId']).attr('data-slick-index'));
+                        }
+                        document.getElementById('severe-weather-' + parsedWarnings[j]['alertId']).remove();
+                        currentWeatherWarningsIds.splice(i, 1);
+                    }
                 }
             }
         });

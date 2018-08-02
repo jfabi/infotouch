@@ -207,28 +207,23 @@ var transitAlertsUpdate = function nextServiceUpdate() {
 
                 for (i = 0; i < parsedAlerts.length; i++) {
                     var divId = 'transit-alert-' + parsedAlerts[i]['alertId'];
-                    console.log('Currently working with div of ID:')
+                    console.log('Currently working with TRANSIT div of ID:')
                     console.log(divId)
 
-                    if (document.getElementById(divId) == null && parsedAlerts != '') {
+                    if (document.getElementById(divId) == null) {
                         $('#main').append('<div id=' + divId + '></div>');
                         currentTransitAlertsIds.push(parsedAlerts[i]['alertId']);
                         document.getElementById(divId).innerHTML = parsedAlerts[i]['html'];
                         $('.rotation-group').slick('slickAdd', '#' + divId);
-                    } else if (parsedAlerts != '') {
+                    } else {
                         document.getElementById(divId).innerHTML = parsedAlerts[i]['html'];
-                    } else if (document.getElementById(divId) != null && $('#' + divId).attr('data-slick-index') != null) {
-                        // Remove object from current rotation
-                        $('.rotation-group').slick('slickRemove', $('#' + divId).attr('data-slick-index'));
-                    }
+                    } 
                 }
 
                 // Check if all currentTransitAlertsDivIds are still active alerts
                 console.log(currentTransitAlertsIds);
-
                 currentTransitAlertsIdsCopy = Object.assign([], currentTransitAlertsIds);
 
-                console.log(currentTransitAlertsIdsCopy);
                 for (i = 0; i < currentTransitAlertsIdsCopy.length; i++) {
                     var alertStillActive = false;
                     for (j = 0; j < parsedAlerts.length; j++) {

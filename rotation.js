@@ -74,5 +74,4 @@ var rotationUpdate = function rotationUpdate() {
 	}
 };
 
-rotationUpdate();
 setInterval(rotationUpdate,15000);
