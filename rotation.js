@@ -24,12 +24,13 @@ var rotationUpdate = function rotationUpdate() {
     var sundayPredict = currentTime.getHours() >= 10 && currentTime.getHours() < 13 && currentTime.getDay() == 0
     var weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
     var displayAlertsMinor = currentTime.getHours() >= 7 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
+    overnightMode = currentTime.getHours() >= 0 && currentTime.getHours() < 7
 
     var transitPredictionsDiv = document.getElementById('transit-predictions');
     if (transitPredictionsDiv != null) {
     	if (transitPredictionsDiv.children.length > 0) {
-		    if ((weekdayPredict || sundayPredict) && currentSevereImmediate == false) {
-		    	slickIndex = $('transit-predictions').attr('data-slick-index');
+		    if ((weekdayPredict || sundayPredict) && currentSevereImmediate == false && overnightMode == false) {
+		    	slickIndex = $('#transit-predictions').attr('data-slick-index');
 		    	console.log("Mode A")
 		    	console.log(transitPredictionsDiv)
 		    	console.log(slickIndex)
@@ -38,12 +39,16 @@ var rotationUpdate = function rotationUpdate() {
 		    		$('.rotation-group').slick('slickAdd', '#transit-predictions');
 		    	}
 		    } else {
-		    	slickIndex = $('transit-predictions').attr('data-slick-index');
+		    	slickIndex = $('#transit-predictions').attr('data-slick-index');
 		    	console.log("Mode B")
 		    	console.log(transitPredictionsDiv)
 		    	console.log(slickIndex)
 		    	transitPredictionsDiv.style.display = 'none';
 		    	if (slickIndex != null) {
+		    		console.log("")
+		    		console.log(" !!!!! REMOVING PREDICTIONS")
+		    		console.log(slickIndex)
+		    		console.log("")
 		        	$('.rotation-group').slick('slickRemove', slickIndex);
 		    	}
 		    }
@@ -53,8 +58,8 @@ var rotationUpdate = function rotationUpdate() {
     var messageStatusDiv = document.getElementById('message-status');
     if (messageStatusDiv != null) {
     	if (messageStatusDiv.children.length > 0) {
-		    if (!weekdayHideTwitter && currentSevereImmediate == false) {
-		    	slickIndex = $('message-status').attr('data-slick-index');
+		    if (!weekdayHideTwitter && currentSevereImmediate == false && overnightMode == false) {
+		    	slickIndex = $('#message-status').attr('data-slick-index');
 		    	console.log("Mode T")
 		    	console.log(slickIndex)
 		    	messageStatusDiv.style.display = 'inline';
@@ -62,11 +67,15 @@ var rotationUpdate = function rotationUpdate() {
 		    		$('.rotation-group').slick('slickAdd', '#message-status');
 		    	}
 		    } else {
-		    	slickIndex = $('message-status').attr('data-slick-index');
+		    	slickIndex = $('#message-status').attr('data-slick-index');
 		    	console.log("Mode U")
 		    	console.log(slickIndex)
 		    	messageStatusDiv.style.display = 'none';
 		    	if (slickIndex != null) {
+		    		console.log("")
+		    		console.log(" !!!!! REMOVING TWITTER")
+		    		console.log(slickIndex)
+		    		console.log("")
 		        	$('.rotation-group').slick('slickRemove', slickIndex);
 		    	}
 		    }

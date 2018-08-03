@@ -188,6 +188,9 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     if (infoAboutAlerts[i]['severityCategory'] != 'severe' && displayAlertsMinor == false) {
                         continue;
                     }
+                    if (overnightMode == true) {
+                        continue;
+                    }
                     htmlForAlert = ''; 
                     htmlForAlert += '<h2 class="transitAlert" style="color: white; background-color: red">'
                     htmlForAlert += '<span class="transitAlertType">';
@@ -234,10 +237,15 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     }
                     if (alertStillActive == false) {
                         // This means alert is not active: remove from list, rotation, html
+                        console.log("")
+                        console.log("  !!! REMOVING TRANSIT ALERT")
+                        console.log(currentTransitAlertsIdsCopy[i])
+                        console.log($('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index'))
+                        console.log(document.getElementById('transit-alert-' + currentTransitAlertsIdsCopy[i]))
+                        console.log("")
                         if ($('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index') != null) {
                             $('.rotation-group').slick('slickRemove', $('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index'));
                         }
-                        document.getElementById('transit-alert-' + currentTransitAlertsIdsCopy[i]).remove();
                         currentTransitAlertsIds.splice(i, 1);
                     }
                 }

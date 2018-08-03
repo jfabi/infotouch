@@ -21,6 +21,9 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     if (alert['severity'] == 'minor') {
                         continue;
                     }
+                    if (alert['urgency'] != 'Immediate' && overnightMode == true) {
+                        continue;
+                    }
                     daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
                     expires = new Date(alert['ends']);
                     expiresDay = daysOfWeek[expires.getDay()];
@@ -90,10 +93,15 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     }
                     if (warningStillActive == false) {
                         // This means warning is not active: remove from list, rotation, html
+                        console.log("")
+                        console.log("  !!! REMOVING WEATHER ALERT")
+                        console.log(currentWeatherWarningsIdsCopy[i])
+                        console.log($('#severe-weather-' + currentWeatherWarningsIdsCopy[i]).attr('data-slick-index'))
+                        console.log(document.getElementById('severe-weather-' + currentWeatherWarningsIdsCopy[i]))
+                        console.log("")
                         if ($('#severe-weather-' + currentWeatherWarningsIdsCopy[i]).attr('data-slick-index') != null) {
                             $('.rotation-group').slick('slickRemove', $('#severe-weather-' + currentWeatherWarningsIdsCopy[i]).attr('data-slick-index'));
                         }
-                        document.getElementById('severe-weather-' + currentWeatherWarningsIdsCopy[i]).remove();
                         currentWeatherWarningsIds.splice(i, 1);
                     }
                 }
