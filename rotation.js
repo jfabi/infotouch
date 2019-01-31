@@ -2,7 +2,7 @@ $(document).ready(function(){
   $('.rotation-group').slick({
     infinite: true,
     slidesToShow: 1,
-    autoplay: false,
+    autoplay: true,
     autoplaySpeed: 5000,
     speed: 0,
     adaptiveHeight: true

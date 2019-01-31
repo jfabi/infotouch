@@ -34,15 +34,15 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     expiresHours = expires.getHours().toString().length == 1 ? '0' + expires.getHours() : expires.getHours()
                     expiresMins = expires.getMinutes().toString().length == 1 ? '0' + expires.getMinutes() : expires.getMinutes()
                     alertName = alert['event'];
-                    description = alert['description'] + ' ' + alert['instruction'];
+                    description = alert['instruction'];
 
                     htmlForWarning = '';
-                    htmlForWarning += '<h2 class="weatherAlert" style="color: black; background-color: yellow">'
-                    htmlForWarning += '<span class="weatherAlertType">';
-                    htmlForWarning += alertName + '</span>';
-                    htmlForWarning += '<span class="alertExpire"> until ' + expiresDay + ' ';
-                    htmlForWarning += expiresHours + ':' + expiresMins + '</span>'
-                    htmlForWarning += '</h2>' + description + '<br/><br/>';
+                    htmlForWarning += '<div class="weather-alert-container"><h2>'
+                    htmlForWarning += '<div class="weather-alert-type">';
+                    htmlForWarning += alertName + '</div>';
+                    htmlForWarning += '<span class="weather-alert-expire">Until ' + expiresDay + ' ';
+                    htmlForWarning += expiresHours + ':' + expiresMins + ''
+                    htmlForWarning += '</h2>' + description + '</div>';
 
                     parsedWarning = {};
                     parsedWarning['alertId'] = alert['id'];
@@ -70,7 +70,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     supressDueToSevereImmediate = (parsedWarnings[i]['severity'] != 'Severe' || parsedWarnings[i]['urgency'] != 'Immediate') && currentSevereImmediate == true
 
                     if (document.getElementById(divId) == null && !supressDueToSevereImmediate) {
-                        $('#main').append('<div id=' + divId + ' style="background-color: white;"></div>');
+                        $('#main').append('<div id=' + divId + ' style="background-color: yellow;"></div>');
                         currentWeatherWarningsIds.push(parsedWarnings[i]['alertId']);
                         document.getElementById(divId).innerHTML = parsedWarnings[i]['html'];
                         $('.rotation-group').slick('slickAdd', '#' + divId);
