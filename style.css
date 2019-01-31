@@ -5,7 +5,7 @@ body {
 
 .rotation-group {
 	min-height: 100%;
-	background-color: cyan;
+	/*background-color: cyan;*/
 }
 
 .slick-slide {
@@ -50,6 +50,28 @@ body {
 	text-align: right;
 }
 
+.transit-alert-container {
+	background-color: white;
+	color: black;
+	padding: 10px;
+}
+
+.transit-alert-route {
+	webkit-border-radius: 4rem;
+	border-radius: 4rem;
+	padding: .0625rem .5rem;
+	margin-bottom: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 86px;
+}
+
+.transit-alert-title {
+	color: black;
+    font-weight: 700;
+    font-size: 72px;
+}
+
 .weather-alert-container {
 	background-color: yellow;
 	color: black;
@@ -61,7 +83,6 @@ body {
 	background-color: black;
 	webkit-border-radius: 4rem;
 	border-radius: 4rem;
-	border-color: black;
 	padding: .25rem 2rem;
 	margin-bottom: 0;
     font-weight: 700;

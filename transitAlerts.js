@@ -192,14 +192,14 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         continue;
                     }
                     htmlForAlert = ''; 
-                    htmlForAlert += '<h2 class="transitAlert" style="color: white; background-color: red">'
+                    htmlForAlert += '<div class="transit-alert-container"><h2 class="transitAlert">'
                     htmlForAlert += '<span class="transitAlertType">';
-                    htmlForAlert += '<span class="transit-route-label" style="color: #' + textColor;
+                    htmlForAlert += '<span class="transit-alert-route" style="color: #' + textColor;
                     htmlForAlert += '; background-color: #' + backgroundColor + '">&nbsp;';
-                    htmlForAlert += routeDisplay + '&nbsp;</span>&nbsp;';
-                    htmlForAlert += '<span class="transitAlertTitle">' + effectDisplay + ' ';
+                    htmlForAlert += routeDisplay + '&nbsp;</span><br>';
+                    htmlForAlert += '<span class="transit-alert-title">' + effectDisplay + ' ';
                     htmlForAlert += severityDisplay + ' ' + causeDisplay + '</span>'
-                    htmlForAlert += '</h2>' + description + '<br/><br/>';
+                    htmlForAlert += '</h2>' + description + '</div>';
 
                     parsedAlert = {};
                     parsedAlert['alertId'] = infoAboutAlerts[i]['alertId'];
