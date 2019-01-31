@@ -1,0 +1,108 @@
+body {
+	font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+	font-size: 26px;
+}
+
+.rotation-group {
+	min-height: 100%;
+	background-color: cyan;
+}
+
+.slick-slide {
+	min-height: 100vh;
+}
+
+.transit-first-prediction {
+	font-weight: 700;
+}
+
+.transit-prediction {
+	display: flex;
+	vertical-align: middle;
+	padding-top: 10px;
+	font-size: 38px;
+}
+
+.transit-min {
+	font-size: 20px;
+}
+
+.transit-route {
+	flex: 12%;
+}
+
+.transit-route-label {
+	webkit-border-radius: 2rem;
+	border-radius: 2rem;
+	padding: .125rem .25rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.transit-headsign {
+	flex: 63%;
+	font-weight: 700;
+}
+
+.transit-countdown {
+	/*width: 40vw;*/
+	flex: 25%;
+	text-align: right;
+}
+
+
+#footer {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	width: 100%;
+	background-color: yellow;
+	display: none;
+}
+
+#footer-title {
+	font-weight: bolder;
+}
+
+#footer-content-scroll {
+ position: relative;
+ width: 100%;
+ height: 100%;
+ text-align: center;
+ overflow-x: scroll;
+ white-space: nowrap;
+ /* Starting position */
+ -moz-transform:translateX(100%);
+ -webkit-transform:translateX(100%);	
+ transform:translateX(100%);
+ /* Apply animation to this element */	
+ -moz-animation: footer-content-scroll 35s linear infinite;
+ -webkit-animation: footer-content-scroll 35s linear infinite;
+ animation: footer-content-scroll 35s linear infinite;
+}
+/* Move it (define the animation) */
+@-moz-keyframes footer-content-scroll {
+ 0%   { -moz-transform: translateX(100%); }
+ 100% { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes footer-content-scroll {
+ 0%   { -webkit-transform: translateX(100%); }
+ 100% { -webkit-transform: translateX(-100%); }
+}
+@keyframes footer-content-scroll {
+ 0%   { 
+ -moz-transform: translateX(100%); /* Firefox bug fix */
+ -webkit-transform: translateX(100%); /* Firefox bug fix */
+ transform: translateX(100%); 		
+ }
+ 100% { 
+ -moz-transform: translateX(-100%); /* Firefox bug fix */
+ -webkit-transform: translateX(-100%); /* Firefox bug fix */
+ transform: translateX(-100%); 
+ }
+}

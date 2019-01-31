@@ -73,7 +73,7 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         } else if (rawCountdown < 30) {
                             countdown = 'ARR';
                         } else {
-                            countdown = Math.round(rawCountdown/60) + 'm';
+                            countdown = Math.round(rawCountdown/60) + '<span class="transit-min"> min</span>';
                         }
 
                         routeHeadsignKey = routeId + '-' + headsign;
@@ -101,29 +101,42 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         if (routeDisplay == '') {
                             routeDisplay = infoAboutRoutes[routeId]['longName'];
                         }
+                        if (routeDisplay == 'Red Line') {
+                            routeDisplay = 'RL'
+                        } else if (routeDisplay == 'Orange Line') {
+                            routeDisplay = 'OL'
+                        } else if (routeDisplay == 'Blue Line') {
+                            routeDisplay = 'BL'
+                        }
                         var textColor = infoAboutRoutes[routeId]['textColor'];
                         var backgroundColor = infoAboutRoutes[routeId]['backgroundColor'];
 
-                        htmlForPredictions += '<span class="prediction">'
-                        htmlForPredictions += '<span class="route" style="color: #' + textColor;
+                        htmlForPredictions += '<span class="transit-prediction">'
+                        htmlForPredictions += '<span class="transit-route"><span class="transit-route-label" style="color: #' + textColor;
                         htmlForPredictions += '; background-color: #' + backgroundColor + '">&nbsp;';
-                        htmlForPredictions += routeDisplay + '&nbsp;</span>&nbsp;';
-                        htmlForPredictions += '<span class="headsign">' + displayablePredictions[key]['headsign'] + '</span>&nbsp';
-                        htmlForPredictions += '<span class="countdown">';
+                        htmlForPredictions += routeDisplay + '&nbsp;</span></span>&nbsp;&nbsp;';
+                        htmlForPredictions += '<span class="transit-headsign">' + displayablePredictions[key]['headsign'] + '</span>';
+                        htmlForPredictions += '<span class="transit-countdown">';
                         for (i = 0; i < displayablePredictions[key]['predictions'].length; i++) {
-                            htmlForPredictions += displayablePredictions[key]['predictions'][i];
+                            if (i == 0) {
+                                htmlForPredictions += '<span class="transit-first-prediction">'
+                                htmlForPredictions += displayablePredictions[key]['predictions'][i];
+                                htmlForPredictions += '</span>'
+                            } else {
+                                htmlForPredictions += displayablePredictions[key]['predictions'][i];
+                            }
                             if (i + 1 < displayablePredictions[key]['predictions'].length) {
                                 // Separate out each predictions
-                                htmlForPredictions += ', ';
+                                htmlForPredictions += '  ';
                             }
                         }
                         htmlForPredictions += '</span>&nbsp';
-                        htmlForPredictions += '</span><br/>';
+                        htmlForPredictions += '</span>';
                     }
                 }
 
                 if (document.getElementById('transit-predictions') == null && htmlForPredictions != '') {
-                    $('#main').append('<div id="transit-predictions"></div>');
+                    $('#main').append('<div id="transit-predictions" style="background-color: white"></div>');
                     document.getElementById('transit-predictions').innerHTML = htmlForPredictions;
                 } else if (htmlForPredictions != '') {
                     document.getElementById('transit-predictions').innerHTML = htmlForPredictions;

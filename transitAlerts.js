@@ -194,7 +194,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     htmlForAlert = ''; 
                     htmlForAlert += '<h2 class="transitAlert" style="color: white; background-color: red">'
                     htmlForAlert += '<span class="transitAlertType">';
-                    htmlForAlert += '<span class="route" style="color: #' + textColor;
+                    htmlForAlert += '<span class="transit-route-label" style="color: #' + textColor;
                     htmlForAlert += '; background-color: #' + backgroundColor + '">&nbsp;';
                     htmlForAlert += routeDisplay + '&nbsp;</span>&nbsp;';
                     htmlForAlert += '<span class="transitAlertTitle">' + effectDisplay + ' ';
