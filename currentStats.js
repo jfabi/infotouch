@@ -51,7 +51,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
     if (overnightMode == true) {
         if (overnightModeDiv == null) {
             // Create a new div with just the time in overnight mode, add to Slick rotation
-            $('#main').append('<div id="overnight-mode" style="font-size: 48px; color: white; background-color: black;"></div>');
+            $('#main').append('<div id="overnight-mode"></div>');
             $('.rotation-group').slick('slickAdd', '#overnight-mode');
         }
         // Update the current time in overnight-mode

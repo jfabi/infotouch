@@ -74,6 +74,15 @@ body {
     font-size: 60px;
 }
 
+#overnight-mode {
+	font-size: 240px;
+	color: white;
+	background-color: black;
+	text-align: center;
+	font-weight: 700;
+	padding-top: 50px;
+}
+
 
 #footer {
 	position: fixed;
