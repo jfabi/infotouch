@@ -3,6 +3,8 @@
 //  NWS alerts (updates once every 120 seconds)
 var currentWeatherWarningsIds = [];
 var currentSevereImmediate = false;
+var footerWarningTitle = '';
+var footerWarningContentScroll = '';
         
 var severeWeatherUpdate = function nextServiceUpdate() {
 
@@ -15,6 +17,8 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                 var allAlerts = parsed_json['features'];
                 var parsedWarnings = [];
                 var currentSevereImmediateInternal = false;
+                var newFooterWarningTitle = '';
+                var newFooterWarningContentScroll = '';
 
                 for (i = 0; i < allAlerts.length; i++) {
                     alert = allAlerts[i]['properties'];
@@ -33,7 +37,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     description = alert['description'] + ' ' + alert['instruction'];
 
                     htmlForWarning = '';
-                    htmlForWarning += '<h2 class="weatherAlert" style="color: white; background-color: red">'
+                    htmlForWarning += '<h2 class="weatherAlert" style="color: black; background-color: yellow">'
                     htmlForWarning += '<span class="weatherAlertType">';
                     htmlForWarning += alertName + '</span>';
                     htmlForWarning += '<span class="alertExpire"> until ' + expiresDay + ' ';
@@ -49,6 +53,13 @@ var severeWeatherUpdate = function nextServiceUpdate() {
 
                     if (parsedWarning['severity'] == 'Severe' && parsedWarning['urgency'] == 'Immediate') {
                         currentSevereImmediateInternal = true;
+
+                        if (newFooterWarningTitle == '') {
+                            newFooterWarningTitle = alertName;
+                        } else {
+                            newFooterWarningTitle += ', ' + alertName
+                        }
+                        newFooterWarningContentScroll += '  ' + description;
                     }
                 }
 
@@ -59,12 +70,16 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     supressDueToSevereImmediate = (parsedWarnings[i]['severity'] != 'Severe' || parsedWarnings[i]['urgency'] != 'Immediate') && currentSevereImmediate == true
 
                     if (document.getElementById(divId) == null && !supressDueToSevereImmediate) {
-                        $('#main').append('<div id=' + divId + '></div>');
+                        $('#main').append('<div id=' + divId + ' style="background-color: white;"></div>');
                         currentWeatherWarningsIds.push(parsedWarnings[i]['alertId']);
                         document.getElementById(divId).innerHTML = parsedWarnings[i]['html'];
                         $('.rotation-group').slick('slickAdd', '#' + divId);
+
+                        // HELLO
                     } else if (!supressDueToSevereImmediate) {
                         document.getElementById(divId).innerHTML = parsedWarnings[i]['html'];
+
+                        // HELLO
                     } else if (document.getElementById(divId) != null && $('#' + divId).attr('data-slick-index') != null) {
                         // Remove object from current rotation
                         $('.rotation-group').slick('slickRemove', $('#' + divId).attr('data-slick-index'));
@@ -76,6 +91,8 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                                 break;
                             }
                         }
+
+                        // HELLO
                     }
                 }
 
@@ -104,6 +121,18 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                         }
                         currentWeatherWarningsIds.splice(i, 1);
                     }
+                }
+
+                footerWarningTitle = newFooterWarningTitle;
+                footerWarningContentScroll = newFooterWarningContentScroll;
+                if (footerWarningTitle != '' && footerWarningContentScroll != '') {
+                    document.getElementById('footer-title').innerHTML = footerWarningTitle;
+                    document.getElementById('footer-content-scroll').innerHTML = footerWarningContentScroll;
+                    document.getElementById('footer').style.display = 'inline';
+                } else {
+                    document.getElementById('footer-title').innerHTML = '';
+                    document.getElementById('footer-content-scroll').innerHTML = '';
+                    document.getElementById('footer').style.display = 'none';
                 }
             }
         });

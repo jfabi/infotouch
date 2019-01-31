@@ -2,7 +2,7 @@ $(document).ready(function(){
   $('.rotation-group').slick({
     infinite: true,
     slidesToShow: 1,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 5000,
     speed: 0,
     adaptiveHeight: true
@@ -20,11 +20,11 @@ var rotationUpdate = function rotationUpdate() {
     var currentTime = new Date();
 
     // FUTURE: Replace with config.js variables
-    var weekdayPredict = currentTime.getHours() >= 7 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
+    var weekdayPredict = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() <= 6
     var sundayPredict = currentTime.getHours() >= 10 && currentTime.getHours() < 13 && currentTime.getDay() == 0
     var weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
-    var displayAlertsMinor = currentTime.getHours() >= 7 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
-    overnightMode = currentTime.getHours() >= 0 && currentTime.getHours() < 7
+    var displayAlertsMinor = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() < 6
+    overnightMode = currentTime.getHours() >= 1 && currentTime.getHours() < 7
 
     var transitPredictionsDiv = document.getElementById('transit-predictions');
     if (transitPredictionsDiv != null) {

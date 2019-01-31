@@ -15,6 +15,7 @@ Written by Joshua Fabian, jfabi@alum.mit.edu
     <script type="text/javascript" src="slick/slick.min.js"></script>
     <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
     
     <title>infoTouch ALPHA</title>
     
@@ -29,7 +30,7 @@ Written by Joshua Fabian, jfabi@alum.mit.edu
     </style>
 </head>
 
-<body>
+<body style="height: 100vh;">
     
     <!-- Heading bar -->
     <div id="header">
@@ -39,15 +40,14 @@ Written by Joshua Fabian, jfabi@alum.mit.edu
     
     <!-- Main section -->
     <div id="main" class="rotation-group">
-        <div id="severe-weather"></div>
         <div id="weather-forecast" style="display: none"></div>
-        <div id="transit-alerts"></div>
         <div id="message-status"><span id="message-status-body"></span><span id="message-status-ago"></span></div>
-        <div id="transit-predictions"></div>
     </div>
     
     <!-- Footer -->
-    <div id="footer">    
+    <div id="footer">
+    	<div id="footer-title"></div>
+    	<div id="footer-content-scroll"></div>  
     </div>
     
     <!-- Load dependencies -->
