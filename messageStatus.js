@@ -72,13 +72,13 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
     if (secondsSinceTweet != null && secondsSinceTweet != '') {
         // Time passed initially in seconds
         if (secondsSinceTweet > 60 * 60 * 24) {
-            timeSinceTweetText = Math.round(secondsSinceTweet / 60 / 60 / 24) + 'd ago'
+            timeSinceTweetText = Math.round(secondsSinceTweet / 60 / 60 / 24) + ' days ago'
         } else if (secondsSinceTweet > 60 * 60) {
-            timeSinceTweetText = Math.round(secondsSinceTweet / 60 / 60) + 'h ago'
+            timeSinceTweetText = Math.round(secondsSinceTweet / 60 / 60) + ' hours ago'
         } else if (secondsSinceTweet > 60) {
-            timeSinceTweetText = Math.round(secondsSinceTweet / 60) + 'm ago'
+            timeSinceTweetText = Math.round(secondsSinceTweet / 60) + ' minutes ago'
         } else {
-            timeSinceTweetText = secondsSinceTweet + 's ago'
+            timeSinceTweetText = secondsSinceTweet + ' seconds ago'
         }
     }
     
@@ -89,16 +89,31 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         lastDisplayId = displayId;
         lastDisplayText = displayText;
 
+        textSize = '32px'
         textColor = textColorLookup[displayId];
         backgroundColor = backgroundColorLookup[displayId];
 
+        if (displayText.length < 11) {
+            textSize = '121px';
+        } else if (displayText.length < 17) {
+            textSize = '96px';
+        } else if (displayText.length < 25) {
+            textSize = '84px';
+        } else if (displayText.length < 40) {
+            textSize = '74px';
+        } else if (displayText.length < 70) {
+            textSize = '60px';
+        } else if (displayText.length < 140) {
+            textSize = '40px';
+        }
+
         htmlForMessageStatus = '';
-        htmlForMessageStatus += '<h1 class="message-status" style="color: ' + textColor;
-        htmlForMessageStatus += '; background-color: ' + backgroundColor + '">' + displayText;
-        htmlForMessageStatus += '</h1>';
+        htmlForMessageStatus += '<div class="message-status message-container" style="color: ' + textColor;
+        htmlForMessageStatus += '; background-color: ' + backgroundColor + '; font-size: ' + textSize + '">' + displayText;
+        htmlForMessageStatus += '</div>';
         
         if (document.getElementById('message-status') == null) {
-            $('#main').append('<div id="message-status"><span id="message-status-body"></span><span id="message-status-ago"></span></div>');
+            $('#main').append('<div id="message-status" class="normal-colors"><span id="message-status-body"></span><span id="message-status-ago"></span></div>');
             document.getElementById('message-status-body').innerHTML = htmlForMessageStatus;
             $('.rotation-group').slick('slickAdd', '#message-status');
         } else {
@@ -106,15 +121,13 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         }
 
         htmlForMessageAgo = '';
-        htmlForMessageAgo = '<h4 class="message-status" style="color: ' + textColor;
-        htmlForMessageAgo += '; background-color: ' + backgroundColor + '">' + timeSinceTweetText;
+        htmlForMessageAgo = '<h4 class="message-last-updated">' + timeSinceTweetText;
         htmlForMessageAgo += '</h4>';
 
         document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
     } else {
         htmlForMessageAgo = '';
-        htmlForMessageAgo = '<h4 class="message-status" style="color: ' + textColor;
-        htmlForMessageAgo += '; background-color: ' + backgroundColor + '">' + timeSinceTweetText;
+        htmlForMessageAgo = '<h4 class="message-last-updated">' + timeSinceTweetText;
         htmlForMessageAgo += '</h4>';
 
         if (document.getElementById('message-status') == null) {
@@ -137,4 +150,4 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
 };
 
 twitterGetLatestStatuses();
-setInterval(twitterGetLatestStatuses,15000);
+setInterval(twitterGetLatestStatuses,115000);

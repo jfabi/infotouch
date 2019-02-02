@@ -104,6 +104,24 @@ body {
     font-size: 60px;
 }
 
+.message-container {
+	margin: 40px 10px 10px 10px
+}
+
+.message-status {
+	webkit-border-radius: 2rem;
+	border-radius: 2rem;
+	padding: .125rem 1.25rem;
+	font-weight: 700;
+	display: flex;
+	width: max-content;
+	max-width: 92vw;
+}
+
+.message-last-updated {
+	margin: 0px 10px 0px 10px;
+}
+
 #overnight-mode {
 	font-size: 240px;
 	color: white;
