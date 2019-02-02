@@ -15,7 +15,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
 
     var currentTime = new Date();
     htmlForCurrentStats = '<table id="header-container" class="normal-colors"><tr>'
-    htmlForCurrentStats += '<td style="width: 30%; text-align: left;" class="app-title"><b>infoTouch</b> by jfabi</td>'
+    htmlForCurrentStats += '<td style="width: 25%; text-align: left;" class="app-title"><b>infoTouch</b> by jfabi</td>'
     if (currentTime.getSeconds() % 10 < 5 && overnightMode == false) {
         // Show clock time, day of week
         var dayOfWeek = currentTime.getDay();
@@ -29,13 +29,13 @@ var currentStatsUpdate = function currentStatsUpdate() {
             minute = "0" + minute;
         }
 
-        htmlForCurrentStats += '<td style="width: 50%; text-align: right;">'
+        htmlForCurrentStats += '<td style="width: 55%; text-align: right;">'
         htmlForCurrentStats += '<span class="header-smaller">' + daysOfWeek[dayOfWeek] + ' </span>'
         htmlForCurrentStats += '<span class="header-larger">' + hour + ':' + minute + '</span>'
         htmlForCurrentStats += '</td>'
     } else {
         // Show temp in C, temp in F
-        htmlForCurrentStats += '<td style="width: 50%; text-align: right;">'
+        htmlForCurrentStats += '<td style="width: 53%; text-align: right;">'
         htmlForCurrentStats += '<a onclick="showWeatherForecast()" href="javascript:void(0);" class="' + 'normal-colors' + '">'
         htmlForCurrentStats += '<span>' + currentWeather + ' </span>'
         htmlForCurrentStats += '<span class="header-larger">' + currentTempC + '&deg;</span><span class="header-smaller">C</span>'
@@ -43,7 +43,12 @@ var currentStatsUpdate = function currentStatsUpdate() {
         htmlForCurrentStats += '</a></td>'
     }
 
-    htmlForCurrentStats += '<td style="width: 10%; text-align: right; vertical-align: inherit;"><a onclick="showLifxControl()" href="javascript:void(0);" class="' + 'normal-colors' + '">BULB</a></td>'
+    // Light bulb icons created by Numero Uno from Noun Project (CC)
+    var bulbFileName = 'bulb-unlit-black.png';
+    if (overnightMode == true) {
+        bulbFileName = 'bulb-unlit-white.png';
+    }
+    htmlForCurrentStats += '<td style="width: 7%; text-align: right; vertical-align: inherit;"><a onclick="showLifxControl()" href="javascript:void(0);" class="' + 'normal-colors' + '"><img src="icons/' + bulbFileName + '" height="58px"></a></td>'
     htmlForCurrentStats += '</tr>'
     htmlForCurrentStats += '</table><div class="header-delineator ' + 'inverse-colors' + '"></div>'
 
