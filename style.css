@@ -82,6 +82,11 @@ body {
 	background-color: yellow;
 }
 
+.weather-alert-severe-type {
+	color: white;
+	background-color: black;
+}
+
 .weather-alert-type {
 	webkit-border-radius: 4rem;
 	border-radius: 4rem;
@@ -95,7 +100,6 @@ body {
 }
 
 .weather-alert-expire {
-	color: black;
     font-weight: 700;
     font-size: 60px;
 }

@@ -36,15 +36,20 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     expiresMins = expires.getMinutes().toString().length == 1 ? '0' + expires.getMinutes() : expires.getMinutes()
                     alertName = alert['event'];
                     description = alert['instruction'];
-                    severeBackground = '';
+                    alertBackground = '';
+                    alertTypeColors = '';
 
                     if (alert['severity'] == 'Severe' && (alert['urgency'] == 'Expected' || alert['urgency'] == 'Immediate')) {
-                        severeBackground = ' weather-alert-severe';
+                        alertBackground = 'weather-alert-severe';
+                        alertTypeColors = 'weather-alert-severe-type';
+                    } else {
+                        alertBackground = 'normal-colors';
+                        alertTypeColors = 'inverse-colors';
                     }
 
                     htmlForWarning = '';
-                    htmlForWarning += '<div class="weather-alert-container' + severeBackground + '"><h2>'
-                    htmlForWarning += '<div class="weather-alert-type ' + 'inverse-colors' + '">';
+                    htmlForWarning += '<div class="weather-alert-container ' + alertBackground + '"><h2>'
+                    htmlForWarning += '<div class="weather-alert-type ' + alertTypeColors + '">';
                     htmlForWarning += alertName + '</div>';
                     htmlForWarning += '<span class="weather-alert-expire">Until ' + expiresDay + ' ';
                     htmlForWarning += expiresHours + ':' + expiresMins + ''
