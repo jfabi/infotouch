@@ -71,9 +71,15 @@ body {
 }
 
 .weather-alert-container {
-	background-color: yellow;
 	color: black;
 	padding: 10px;
+	height: -moz-available;
+    height: -webkit-fill-available;
+    height: fill-available;
+}
+
+.weather-alert-severe {
+	background-color: yellow;
 }
 
 .weather-alert-type {
