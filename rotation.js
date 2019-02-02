@@ -2,7 +2,7 @@ $(document).ready(function(){
   $('.rotation-group').slick({
     infinite: true,
     slidesToShow: 1,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 5000,
     speed: 0,
     adaptiveHeight: true
@@ -14,6 +14,7 @@ $(document).ready(function(){
 
 var displayAlertsMinor = true;
 var displayAlertsSevere = true;
+var stylesheet = document.styleSheets[4]
 
 var rotationUpdate = function rotationUpdate() {
 
@@ -24,7 +25,19 @@ var rotationUpdate = function rotationUpdate() {
     var sundayPredict = currentTime.getHours() >= 10 && currentTime.getHours() < 13 && currentTime.getDay() == 0
     var weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
     var displayAlertsMinor = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() < 6
-    overnightMode = currentTime.getHours() >= 1 && currentTime.getHours() < 7
+
+    overnightMode = currentTime.getHours() >= 1 && currentTime.getHours() <= 6
+    if (overnightMode == false) {
+		stylesheet.deleteRule(2)
+		stylesheet.deleteRule(1)
+		stylesheet.insertRule('.normal-colors {color: black; background-color: white; border-color: black;', 1);
+		stylesheet.insertRule('.inverse-colors {color: white; background-color: black; border-color: white;', 2);
+	} else {
+		stylesheet.deleteRule(2)
+		stylesheet.deleteRule(1)
+		stylesheet.insertRule('.normal-colors {color: white; background-color: black; border-color: white;', 1);
+		stylesheet.insertRule('.inverse-colors {color: black; background-color: white; border-color: black;', 2);
+	}
 
     var transitPredictionsDiv = document.getElementById('transit-predictions');
     if (transitPredictionsDiv != null) {

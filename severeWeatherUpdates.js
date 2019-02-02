@@ -13,6 +13,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
             url : "https://api.weather.gov/alerts?active=1&point=" + weatherPoint,
             dataType : "json",
             success : function(parsed_json) {
+                console.log("just downloaded")
 
                 var allAlerts = parsed_json['features'];
                 var parsedWarnings = [];
@@ -38,7 +39,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
 
                     htmlForWarning = '';
                     htmlForWarning += '<div class="weather-alert-container"><h2>'
-                    htmlForWarning += '<div class="weather-alert-type">';
+                    htmlForWarning += '<div class="weather-alert-type ' + 'inverse-colors' + '">';
                     htmlForWarning += alertName + '</div>';
                     htmlForWarning += '<span class="weather-alert-expire">Until ' + expiresDay + ' ';
                     htmlForWarning += expiresHours + ':' + expiresMins + ''

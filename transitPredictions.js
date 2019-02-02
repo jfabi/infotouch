@@ -136,10 +136,10 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                 }
 
                 if (document.getElementById('transit-predictions') == null && htmlForPredictions != '') {
-                    $('#main').append('<div id="transit-predictions" style="background-color: white"></div>');
-                    document.getElementById('transit-predictions').innerHTML = htmlForPredictions;
+                    $('#main').append('<div id="transit-predictions" class="normal-colors"></div>');
+                    document.getElementById('transit-predictions').innerHTML = '<div style="padding: 10px" class="normal-colors">' + htmlForPredictions + '</div>';
                 } else if (htmlForPredictions != '') {
-                    document.getElementById('transit-predictions').innerHTML = htmlForPredictions;
+                    document.getElementById('transit-predictions').innerHTML = '<div style="padding: 10px" class="normal-colors">' + htmlForPredictions + '</div>';
                 }
             }
         });

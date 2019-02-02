@@ -8,15 +8,18 @@ var tempString = '';
 var currentIsDaytime = 'Nighttime';
 var currentWeather = '';
 var overnightMode = false;
+var colorClass = 'normal-colors';
+var inverseColorClass = 'overnight-colors';
         
 var currentStatsUpdate = function currentStatsUpdate() {
 
     var currentTime = new Date();
-    htmlForCurrentStats = '<table><tr>'
-    htmlForCurrentStats += '<td style="width: 28%; text-align: left">infoTouch by jfabi</td>'
-    htmlForCurrentStats += '<td style="width: 16%; text-align: center"><a onclick="showLifxControl()" href="javascript:void(0);">BULB</a></td>'
+    htmlForCurrentStats = '<table id="header-container" class="normal-colors"><tr>'
+    htmlForCurrentStats += '<td style="width: 30%; text-align: left;" class="app-title"><b>infoTouch</b> by jfabi</td>'
     if (currentTime.getSeconds() % 10 < 5 && overnightMode == false) {
-        // Show clock time, temp in C
+        // Show clock time, day of week
+        var dayOfWeek = currentTime.getDay();
+        var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         var hour = currentTime.getHours();
         if (hour < 10) {
             hour = "0" + hour;
@@ -26,24 +29,23 @@ var currentStatsUpdate = function currentStatsUpdate() {
             minute = "0" + minute;
         }
 
-        htmlForCurrentStats += '<td style="width: 28%; text-align: center">' + hour + ':' + minute + '</td>'
-        tempString = currentTempC + '&deg;C'
+        htmlForCurrentStats += '<td style="width: 50%; text-align: right;">'
+        htmlForCurrentStats += '<span class="header-smaller">' + daysOfWeek[dayOfWeek] + ' </span>'
+        htmlForCurrentStats += '<span class="header-larger">' + hour + ':' + minute + '</span>'
+        htmlForCurrentStats += '</td>'
     } else {
-        // Show day of week, day of month, temp in F
-        var day = currentTime.getDate();
-        var dayOfWeek = currentTime.getDay();
-        var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-        htmlForCurrentStats += '<td style="width: 28%; text-align: center">' + daysOfWeek[dayOfWeek] + ' ' + day + '</td>'
-        if (currentTime.getSeconds() % 10 >= 5) {
-            tempString = currentTempF + '&deg;F'
-        } else {
-            tempString = currentTempC + '&deg;C'
-        }
+        // Show temp in C, temp in F
+        htmlForCurrentStats += '<td style="width: 50%; text-align: right;">'
+        htmlForCurrentStats += '<a onclick="showWeatherForecast()" href="javascript:void(0);" class="' + 'normal-colors' + '">'
+        htmlForCurrentStats += '<span>' + currentWeather + ' </span>'
+        htmlForCurrentStats += '<span class="header-larger">' + currentTempC + '&deg;</span><span class="header-smaller">C</span>'
+        htmlForCurrentStats += '<span class="header-larger"> ' + currentTempF + '&deg;</span><span class="header-smaller">F</span>'
+        htmlForCurrentStats += '</a></td>'
     }
 
-    htmlForCurrentStats += '<td style="width: 28%; text-align: right"><a onclick="showWeatherForecast()" href="javascript:void(0);">' + tempString + ' ' + currentWeather + '</a></td>'
-    htmlForCurrentStats += '</tr></table>'
+    htmlForCurrentStats += '<td style="width: 10%; text-align: right; vertical-align: inherit;"><a onclick="showLifxControl()" href="javascript:void(0);" class="' + 'normal-colors' + '">BULB</a></td>'
+    htmlForCurrentStats += '</tr>'
+    htmlForCurrentStats += '</table><div class="header-delineator ' + 'inverse-colors' + '"></div>'
 
     document.getElementById('current-stats').innerHTML = htmlForCurrentStats;
 

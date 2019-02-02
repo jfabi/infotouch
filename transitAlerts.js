@@ -192,7 +192,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         continue;
                     }
                     htmlForAlert = ''; 
-                    htmlForAlert += '<div class="transit-alert-container"><h2 class="transitAlert">'
+                    htmlForAlert += '<div class="transit-alert-container ' + 'normal-colors' + '"><h2 class="transitAlert">'
                     htmlForAlert += '<span class="transitAlertType">';
                     htmlForAlert += '<span class="transit-alert-route" style="color: #' + textColor;
                     htmlForAlert += '; background-color: #' + backgroundColor + '">&nbsp;';
