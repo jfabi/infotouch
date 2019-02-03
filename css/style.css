@@ -104,6 +104,16 @@ body {
     font-size: 60px;
 }
 
+.weather-icon-header {
+	vertical-align: text-bottom;
+}
+
+.weather-icon-header::before {
+	font-size: 55px;
+	font-weight: 700;
+	vertical-align: super;
+}
+
 .message-container {
 	margin: 40px 10px 10px 10px
 }

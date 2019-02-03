@@ -16,7 +16,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
     var currentTime = new Date();
     htmlForCurrentStats = '<table id="header-container" class="normal-colors"><tr>'
     htmlForCurrentStats += '<td style="width: 25%; text-align: left;" class="app-title"><b>infoTouch</b> by jfabi</td>'
-    if (currentTime.getSeconds() % 10 < 5 && overnightMode == false) {
+    if (currentTime.getSeconds() % 10 < 5 && overnightMode != false) {
         // Show clock time, day of week
         var dayOfWeek = currentTime.getDay();
         var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -37,7 +37,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
         // Show temp in C, temp in F
         htmlForCurrentStats += '<td style="width: 53%; text-align: right;">'
         htmlForCurrentStats += '<a onclick="showWeatherForecast()" href="javascript:void(0);" class="' + 'normal-colors' + '">'
-        htmlForCurrentStats += '<span>' + currentWeather + ' </span>'
+        htmlForCurrentStats += '<i class="wi ' + currentWeatherIcon + ' weather-icon-header"></i>&nbsp;&nbsp;'
         htmlForCurrentStats += '<span class="header-larger">' + currentTempC + '&deg;</span><span class="header-smaller">C</span>'
         htmlForCurrentStats += '<span class="header-larger"> ' + currentTempF + '&deg;</span><span class="header-smaller">F</span>'
         htmlForCurrentStats += '</a></td>'
@@ -82,4 +82,4 @@ var currentStatsUpdate = function currentStatsUpdate() {
 };
 
 currentStatsUpdate();
-setInterval(currentStatsUpdate,5000);
+setInterval(currentStatsUpdate,40000);

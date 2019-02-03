@@ -14,6 +14,7 @@ var currentTempF = 0;
 var currentTempC = 0;
 var currentIsDaytime = 'Nighttime';
 var currentWeather = '';
+var currentWeatherIcon = 'wi-train';
         
 var weatherForecastUpdate = function nextWeatherForecastUpdate() {
 
@@ -52,6 +53,7 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
                         currentTempC = cTemp;
                         currentIsDaytime = isDaytimeDisplay;
                         currentWeather = description;
+                        currentWeatherIcon = weatherIconClass(currentWeather);
                     }
 
                     htmlForForecasts += '<span class="weatherForecast">'
