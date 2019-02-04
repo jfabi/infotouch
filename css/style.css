@@ -169,6 +169,64 @@ body {
 	border-right: 10px solid;
 }
 
+.weather-forecast {
+	display: flex;
+	vertical-align: middle;
+	padding-bottom: 18px;
+}
+
+.weather-forecast-container {
+	margin: 10px;
+	height: -webkit-fill-available;
+    height: fill-available;
+	width: -webkit-fill-available;
+    width: fill-available;
+}
+
+.weather-forecast-time {
+	flex: 9%;
+	font-size: 48px;
+	font-weight: 700;
+	text-align: left;
+}
+
+.weather-forecast-icon {
+	flex: 15%;
+	font-size: 42px;
+	text-align: center;
+}
+
+.weather-forecast-icon::before {
+	vertical-align: text-bottom;
+}
+
+.weather-forecast-text {
+	flex: 35%;
+	font-size: 26px;
+	text-align: left;
+	padding-top: 12px;
+}
+
+.weather-forecast-temp-data {
+	font-size: 48px;
+	font-weight: 700;
+}
+
+.weather-forecast-temp-c {
+	flex: 14%;
+	text-align: right;
+}
+
+.weather-forecast-temp-f {
+	flex: 14%;
+	text-align: right;
+}
+
+.weather-forecast-temp-label {
+	font-size: 20px;
+	font-weight: 700;
+}
+
 .app-title {
 	display: table-cell;
 	vertical-align: inherit;

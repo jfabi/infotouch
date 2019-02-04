@@ -53,19 +53,20 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
                         currentTempC = cTemp;
                         currentIsDaytime = isDaytimeDisplay;
                         currentWeather = description;
-                        currentWeatherIcon = weatherIconClass(currentWeather);
+                        currentWeatherIcon = weatherIconClass(currentWeather,currentIsDaytime);
                     }
 
-                    htmlForForecasts += '<span class="weatherForecast">'
-                    htmlForForecasts += timeDisplay + '</span>&nbsp;';
-                    htmlForForecasts += description + '&nbsp;(' + isDaytimeDisplay + ')&nbsp;'
-                    htmlForForecasts += '<span class="temparatures">&nbsp;';
-                    htmlForForecasts += cTemp + '&deg;C / ' + fTemp + '&deg;F&nbsp;';
-                    htmlForForecasts += '</span><br/>';
+                    htmlForForecasts += '<span class="weather-forecast">'
+                    htmlForForecasts += '<span class="weather-forecast-time">' + timeDisplay + '</span>';
+                    htmlForForecasts += '<i class="wi ' + weatherIconClass(description,isDaytimeDisplay) + ' weather-forecast-icon"></i>';
+                    htmlForForecasts += '<span class="weather-forecast-text">' + description + '</span>';
+                    htmlForForecasts += '<span class="weather-forecast-temp-c"><span class="weather-forecast-temp-data">' + cTemp + '&deg;</span><span class="weather-forecast-temp-label">C</span></span>'
+                    htmlForForecasts += '<span class="weather-forecast-temp-f"><span class="weather-forecast-temp-data">' + fTemp + '&deg;</span><span class="weather-forecast-temp-label">F</span></span>';
+                    htmlForForecasts += '</span>';
                 }
 
                 if (document.getElementById('weather-forecast') == null) {
-                    $('#main').append('<div id="weather-forecast" style="display: none"></div>');
+                    $('#main').append('<div id="weather-forecast" style="display: none; margin: 10px;" class="normal-colors"></div>');
                     document.getElementById('weather-forecast').innerHTML = htmlForForecasts;
                 } else {
                     document.getElementById('weather-forecast').innerHTML = htmlForForecasts;
@@ -81,7 +82,7 @@ var showWeatherForecast = function showWeatherForecast() {
     var weatherForecastDiv = document.getElementById('weather-forecast');
 
     if (weatherForecastDiv.style.display == 'none') {
-        weatherForecastDiv.style.display = 'inline';
+        weatherForecastDiv.style.display = 'inline-block';
     } else {
         weatherForecastDiv.style.display = 'none';
         console.log('You closed it up!')

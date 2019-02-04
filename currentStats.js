@@ -15,8 +15,8 @@ var currentStatsUpdate = function currentStatsUpdate() {
 
     var currentTime = new Date();
     htmlForCurrentStats = '<table id="header-container" class="normal-colors"><tr>'
-    htmlForCurrentStats += '<td style="width: 25%; text-align: left;" class="app-title"><b>infoTouch</b> by jfabi</td>'
-    if (currentTime.getSeconds() % 10 < 5 && overnightMode != false) {
+    htmlForCurrentStats += '<td style="width: 27%; text-align: left;" class="app-title"><b>infoTouch</b> by jfabi</td>'
+    if (currentTime.getSeconds() % 10 < 5 && overnightMode == false) {
         // Show clock time, day of week
         var dayOfWeek = currentTime.getDay();
         var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -29,7 +29,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
             minute = "0" + minute;
         }
 
-        htmlForCurrentStats += '<td style="width: 55%; text-align: right;">'
+        htmlForCurrentStats += '<td style="width: 53%; text-align: right;">'
         htmlForCurrentStats += '<span class="header-smaller">' + daysOfWeek[dayOfWeek] + ' </span>'
         htmlForCurrentStats += '<span class="header-larger">' + hour + ':' + minute + '</span>'
         htmlForCurrentStats += '</td>'
@@ -82,4 +82,4 @@ var currentStatsUpdate = function currentStatsUpdate() {
 };
 
 currentStatsUpdate();
-setInterval(currentStatsUpdate,40000);
+setInterval(currentStatsUpdate,5000);
