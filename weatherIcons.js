@@ -1,17 +1,13 @@
 // Written by Joshua Fabian, jfabi@alum.mit.edu
 
 var weatherIconClass = function weatherIconClass(casedCondition) {
-	// Blah
 	var iconClass = 'train';
 	var condition = casedCondition.toLowerCase();
 
-	// TEMP -- eventually compute by time of day and/or sunset/sunrise
-	var daytimePart = 'day';
-
 	if (condition.includes('partly cloudy') || condition.includes('mostly cloudy')) {
-		iconClass = daytimePart + '-cloudy';
+		iconClass = currentIsDaytime + '-cloudy';
 	} else if (condition.includes('partly clear') || condition.includes('mostly clear')) {
-		iconClass = daytimePart + '-cloudy';
+		iconClass = currentIsDaytime + '-cloudy';
 	} else if (condition == 'cloudy' || condition.includes('overcast')) {
 		iconClass = 'cloudy';
 	} else if (condition.includes('sunny')) {
@@ -21,7 +17,7 @@ var weatherIconClass = function weatherIconClass(casedCondition) {
 	} else if (condition.includes('flood')) {
 		iconClass = 'flood';
 	} else if (condition.includes('snow') && condition.includes('thunderstorm')) {
-		iconClass = daytimePart + '-snow-thunderstorm';
+		iconClass = currentIsDaytime + '-snow-thunderstorm';
 	} else if (condition.includes('thunderstorm')) {
 		iconClass = 'thunderstorm';
 	} else if (condition.includes('snow') && condition.includes('wind')) {

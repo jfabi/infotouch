@@ -12,7 +12,7 @@ function toFahrenheit(cTemp) {
 
 var currentTempF = 0;
 var currentTempC = 0;
-var currentIsDaytime = 'Nighttime';
+var currentIsDaytime = 'day';
 var currentWeather = '';
 var currentWeatherIcon = 'wi-train';
         
@@ -33,9 +33,9 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
                     var hourDisplay = timestamp.getHours().toString().length == 1 ? '0' + timestamp.getHours() : timestamp.getHours()
                     var timeDisplay = hourDisplay + ':00';
                     var isDaytime = allForecasts[i]['isDaytime'];
-                    var isDaytimeDisplay = 'Nighttime';
+                    var isDaytimeDisplay = 'night';
                     if (isDaytime == true) {
-                        isDaytimeDisplay = 'Daytime';
+                        isDaytimeDisplay = 'day';
                     }
                     var fTemp = 0;
                     var cTemp = 0;
