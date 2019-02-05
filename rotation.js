@@ -2,7 +2,7 @@ $(document).ready(function(){
   $('.rotation-group').slick({
     infinite: true,
     slidesToShow: 1,
-    autoplay: false,
+    autoplay: true,
     autoplaySpeed: 5000,
     speed: 0,
     adaptiveHeight: true
@@ -22,7 +22,7 @@ var rotationUpdate = function rotationUpdate() {
 
     // FUTURE: Replace with config.js variables
     var weekdayPredict = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() <= 6
-    var sundayPredict = currentTime.getHours() >= 10 && currentTime.getHours() < 13 && currentTime.getDay() == 0
+    var sundayPredict = currentTime.getHours() >= 10 && currentTime.getHours() < 24 && (currentTime.getDay() == 0 || currentTime.getDay() == 7)
     var weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
     var displayAlertsMinor = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() < 6
 
@@ -42,7 +42,7 @@ var rotationUpdate = function rotationUpdate() {
     var transitPredictionsDiv = document.getElementById('transit-predictions');
     if (transitPredictionsDiv != null) {
     	if (transitPredictionsDiv.children.length > 0) {
-		    if ((weekdayPredict || sundayPredict) && currentSevereImmediate == false && overnightMode == false) {
+		    if ((weekdayPredict || sundayPredict) && overnightMode == false) {
 		    	slickIndex = $('#transit-predictions').attr('data-slick-index');
 		    	console.log("Mode A")
 		    	console.log(transitPredictionsDiv)

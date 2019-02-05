@@ -26,7 +26,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     if (alert['severity'] == 'Minor') {
                         continue;
                     }
-                    if (alert['urgency'] != 'Immediate' && overnightMode == true) {
+                    if ((alert['urgency'] != 'Immediate' && alert['urgency'] != 'Expected') && overnightMode == true) {
                         continue;
                     }
                     daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -70,7 +70,13 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                         } else {
                             newFooterWarningTitle += ', ' + alertName
                         }
-                        newFooterWarningContentScroll += '  ' + description;
+                        newFooterWarningContentScroll += '  ' + alert['headline'] + ' ' + alert['description'] + ' ' + alert['instruction'];
+                        console.log('^^^^^ TRUE SHOULD BE STARTING SCROLLER')
+                    } else {
+                        console.log('~~~~~ false should not be starting scroller ?!')
+                        console.log('severity and urgency appear next two lines:')
+                        console.log(parsedWarning['severity'])
+                        console.log(parsedWarning['urgency'])
                     }
                 }
 
@@ -78,7 +84,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
 
                 for (i = 0; i < parsedWarnings.length; i++) {
                     var divId = 'severe-weather-' + parsedWarnings[i]['alertId'];
-                    supressDueToSevereImmediate = (parsedWarnings[i]['severity'] != 'Severe' || parsedWarnings[i]['urgency'] != 'Immediate') && currentSevereImmediate == true
+                    supressDueToSevereImmediate = (parsedWarnings[i]['severity'] != 'Severe' || parsedWarnings[i]['urgency'] == 'Immediate') && currentSevereImmediate == true
 
                     if (document.getElementById(divId) == null && !supressDueToSevereImmediate) {
                         $('#main').append('<div id=' + divId + '></div>');
@@ -136,6 +142,10 @@ var severeWeatherUpdate = function nextServiceUpdate() {
 
                 footerWarningTitle = newFooterWarningTitle;
                 footerWarningContentScroll = newFooterWarningContentScroll;
+                console.log('#### CHECKING TO SEE IF SCROLLER SHOULD START ##########################')
+                console.log(footerWarningTitle)
+                console.log(footerWarningContentScroll)
+                console.log('######################################### ... end ... ##################')
                 if (footerWarningTitle != '' && footerWarningContentScroll != '') {
                     document.getElementById('footer-title').innerHTML = footerWarningTitle;
                     document.getElementById('footer-content-scroll').innerHTML = footerWarningContentScroll;

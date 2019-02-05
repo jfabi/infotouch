@@ -66,7 +66,7 @@ body {
 
 .transit-alert-title {
     font-weight: 700;
-    font-size: 72px;
+    font-size: 60px;
 }
 
 .weather-alert-container {
@@ -250,7 +250,7 @@ td {
 	padding-top: 10px;
 	padding-left: 10px;
 	padding-right: 10px;
-	padding-bottom: 10px;
+	padding-bottom: 40px;
 	width: 100%;
 	background-color: yellow;
 	display: none;
@@ -261,39 +261,38 @@ td {
 }
 
 #footer-content-scroll {
- position: relative;
- width: 100%;
+ position: fixed;
  height: 100%;
  text-align: center;
- overflow-x: scroll;
+ overflow-x: hidden;
  white-space: nowrap;
  /* Starting position */
  -moz-transform:translateX(100%);
  -webkit-transform:translateX(100%);	
  transform:translateX(100%);
  /* Apply animation to this element */	
- -moz-animation: footer-content-scroll 35s linear infinite;
- -webkit-animation: footer-content-scroll 35s linear infinite;
- animation: footer-content-scroll 35s linear infinite;
+ -moz-animation: footer-content-scroll 90s linear infinite;
+ -webkit-animation: footer-content-scroll 90s linear infinite;
+ animation: footer-content-scroll 90s linear infinite;
 }
 /* Move it (define the animation) */
 @-moz-keyframes footer-content-scroll {
- 0%   { -moz-transform: translateX(100%); }
+ 0%   { -moz-transform: translateX(10%); }
  100% { -moz-transform: translateX(-100%); }
 }
 @-webkit-keyframes footer-content-scroll {
- 0%   { -webkit-transform: translateX(100%); }
+ 0%   { -webkit-transform: translateX(10%); }
  100% { -webkit-transform: translateX(-100%); }
 }
 @keyframes footer-content-scroll {
  0%   { 
- -moz-transform: translateX(100%); /* Firefox bug fix */
- -webkit-transform: translateX(100%); /* Firefox bug fix */
- transform: translateX(100%); 		
+ -moz-transform: translateX(10%); /* Firefox bug fix */
+ -webkit-transform: translateX(10%); /* Firefox bug fix */
+ transform: translateX(10%);
  }
  100% { 
  -moz-transform: translateX(-100%); /* Firefox bug fix */
  -webkit-transform: translateX(-100%); /* Firefox bug fix */
- transform: translateX(-100%); 
+ transform: translateX(-100%);
  }
 }
