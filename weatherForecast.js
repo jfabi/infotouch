@@ -20,7 +20,7 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
 
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://api.weather.gov/gridpoints/" + weatherGrid + "/forecast/hourly",
+            url : "https://api.weather.gov/points/" + weatherPoint + "/forecast/hourly",
             dataType : "json",
             success : function(parsed_json) {
 
