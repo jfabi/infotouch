@@ -35,8 +35,8 @@ body {
 	webkit-border-radius: 2rem;
 	border-radius: 2rem;
 	padding: .125rem .25rem;
-    text-transform: uppercase;
-    font-weight: 700;
+	text-transform: uppercase;
+	font-weight: 700;
 }
 
 .transit-headsign {
@@ -59,22 +59,22 @@ body {
 	border-radius: 4rem;
 	padding: .0625rem .5rem;
 	margin-bottom: 0;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 86px;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 86px;
 }
 
 .transit-alert-title {
-    font-weight: 700;
-    font-size: 60px;
+	font-weight: 700;
+	font-size: 60px;
 }
 
 .weather-alert-container {
 	color: black;
 	padding: 10px;
 	height: -moz-available;
-    height: -webkit-fill-available;
-    height: fill-available;
+	height: -webkit-fill-available;
+	height: fill-available;
 }
 
 .weather-alert-severe {
@@ -91,16 +91,16 @@ body {
 	border-radius: 4rem;
 	padding: .25rem 2rem;
 	margin-bottom: 0;
-    font-weight: 700;
-    font-size: 66px;
-    display: flex;
-    width: max-content;
-    max-width: 89vw;
+	font-weight: 700;
+	font-size: 66px;
+	display: flex;
+	width: max-content;
+	max-width: 89vw;
 }
 
 .weather-alert-expire {
-    font-weight: 700;
-    font-size: 60px;
+	font-weight: 700;
+	font-size: 60px;
 }
 
 .weather-icon-header {
@@ -178,9 +178,9 @@ body {
 .weather-forecast-container {
 	margin: 10px;
 	height: -webkit-fill-available;
-    height: fill-available;
+	height: fill-available;
 	width: -webkit-fill-available;
-    width: fill-available;
+	width: fill-available;
 }
 
 .weather-forecast-time {
@@ -261,38 +261,182 @@ td {
 }
 
 #footer-content-scroll {
- position: fixed;
- height: 100%;
- text-align: center;
- overflow-x: hidden;
- white-space: nowrap;
- /* Starting position */
- -moz-transform:translateX(100%);
- -webkit-transform:translateX(100%);	
- transform:translateX(100%);
- /* Apply animation to this element */	
- -moz-animation: footer-content-scroll 90s linear infinite;
- -webkit-animation: footer-content-scroll 90s linear infinite;
- animation: footer-content-scroll 90s linear infinite;
+	position: fixed;
+	height: 100%;
+	text-align: center;
+	overflow-x: hidden;
+	white-space: nowrap;
+	/* Starting position */
+	-moz-transform:translateX(100%);
+	-webkit-transform:translateX(100%);	
+	transform:translateX(100%);
+	/* Apply animation to this element */	
+	-moz-animation: footer-content-scroll 90s linear infinite;
+	-webkit-animation: footer-content-scroll 90s linear infinite;
+	animation: footer-content-scroll 90s linear infinite;
 }
 /* Move it (define the animation) */
 @-moz-keyframes footer-content-scroll {
- 0%   { -moz-transform: translateX(10%); }
- 100% { -moz-transform: translateX(-100%); }
+	0%   { -moz-transform: translateX(10%); }
+	100% { -moz-transform: translateX(-100%); }
 }
 @-webkit-keyframes footer-content-scroll {
- 0%   { -webkit-transform: translateX(10%); }
- 100% { -webkit-transform: translateX(-100%); }
+	0%   { -webkit-transform: translateX(10%); }
+	100% { -webkit-transform: translateX(-100%); }
 }
 @keyframes footer-content-scroll {
- 0%   { 
- -moz-transform: translateX(10%); /* Firefox bug fix */
- -webkit-transform: translateX(10%); /* Firefox bug fix */
- transform: translateX(10%);
- }
- 100% { 
- -moz-transform: translateX(-100%); /* Firefox bug fix */
- -webkit-transform: translateX(-100%); /* Firefox bug fix */
- transform: translateX(-100%);
- }
+	0%   { 
+		-moz-transform: translateX(10%); /* Firefox bug fix */
+		-webkit-transform: translateX(10%); /* Firefox bug fix */
+		transform: translateX(10%);
+	}
+	100% { 
+		-moz-transform: translateX(-100%); /* Firefox bug fix */
+		-webkit-transform: translateX(-100%); /* Firefox bug fix */
+		transform: translateX(-100%);
+	}
+}
+
+.light-control-container {
+	margin: 10px;
+	height: -webkit-fill-available;
+	height: fill-available;
+	width: -webkit-fill-available;
+	width: fill-available;
+}
+
+.light-row {
+	display: flex;
+	padding-bottom: 20px;
+}
+
+.light-label-title {
+	font-weight: 700;
+	font-size: 64px;
+}
+
+.light-label {
+	font-weight: 700;
+	font-size: 50px;
+	flex: 20%;
+	text-align: center;
+	height: 45px;
+}
+
+.light-input {
+	align-self: center;
+	flex: 80%;
+	margin-right: 50px;
+}
+
+.light-input-toggle {
+	align-self: center;
+}
+
+.light-toggle {
+	position: relative;
+	display: inline-block;
+	width: 120px;
+	height: 64px;
+}
+
+.light-toggle input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.light-toggle-power {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+	border-radius: 38px;
+}
+
+.light-toggle-power:before {
+	position: absolute;
+	content: "";
+	height: 54px;
+	width: 54px;
+	left: 6px;
+	bottom: 5px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+	box-shadow: 1px 1px 5px black;
+	border-radius: 38px;
+}
+
+input:checked + .light-toggle-power {
+	background-color: #2196F3;
+}
+
+input:focus + .light-toggle-power {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .light-toggle-power:before {
+	-webkit-transform: translateX(54px);
+	-ms-transform: translateX(54px);
+	transform: translateX(54x`px);
+}
+
+.light-toggle-power.round {
+	-radius: 45px;
+}
+
+.light-toggle-power.round:before {
+	border-radius: 50%;
+}
+
+.light-slider {
+	width: 100%;
+}
+
+/* slider itself */
+.light-slider-input {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 100%;
+	height: 10px;
+	background: #ccc;
+	outline: none;
+	-webkit-transition: .2s; /* transition on hover */
+	transition: opacity .2s;
+	border-radius: 4px;
+}
+
+.light-slider-temperature-input {
+	background: linear-gradient(to right, #ffc77e, white, #50fcff) !important;
+}
+
+.light-slider-hue-input {
+	background: linear-gradient(to right, red, orange, yellow, lime, green, turquoise, cyan, blue, violet, magenta, crimson, red) !important;
+}
+
+/* slider handle */ 
+.light-slider-input::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 54px;
+	height: 54px;
+	background-color: white;
+	cursor: pointer;
+	box-shadow: 1px 1px 5px black;
+	border-radius: 38px;
+}
+
+.light-slider-input::-moz-range-thumb {
+	width: 54px;
+	height: 54px;
+	background-color: white;
+	cursor: pointer;
+	box-shadow: 1px 1px 5px black;
+	border-radius: 38px;
 }

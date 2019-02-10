@@ -30,13 +30,13 @@ var rotationUpdate = function rotationUpdate() {
     if (overnightMode == false) {
 		stylesheet.deleteRule(2)
 		stylesheet.deleteRule(1)
-		stylesheet.insertRule('.normal-colors {color: black; background-color: white; border-color: black;', 1);
-		stylesheet.insertRule('.inverse-colors {color: white; background-color: black; border-color: white;', 2);
+		stylesheet.insertRule('.normal-colors {color: black; background-color: white; border-color: black;}', 1);
+		stylesheet.insertRule('.inverse-colors {color: white; background-color: black; border-color: white;}', 2);
 	} else {
 		stylesheet.deleteRule(2)
 		stylesheet.deleteRule(1)
-		stylesheet.insertRule('.normal-colors {color: white; background-color: black; border-color: white;', 1);
-		stylesheet.insertRule('.inverse-colors {color: black; background-color: white; border-color: black;', 2);
+		stylesheet.insertRule('.normal-colors {color: white; background-color: black; border-color: white;}', 1);
+		stylesheet.insertRule('.inverse-colors {color: black; background-color: white; border-color: black;}', 2);
 	}
 
     var transitPredictionsDiv = document.getElementById('transit-predictions');

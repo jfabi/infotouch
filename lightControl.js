@@ -23,7 +23,7 @@ var lifxBulbGetStatus = function lifxBulbGetStatus(nextFunction) {
                 lightLabel = parsed_json[0]['label'];
                 colorHue = Math.round(parsed_json[0]['color']['hue']);
                 colorKelvin = parsed_json[0]['color']['kelvin'];
-                colorSaturation = Math.round(parsed_json[0]['color']['saturation']);
+                colorSaturation = Math.round(parsed_json[0]['color']['saturation'] * 100);
                 connected = parsed_json[0]['connected'];
                 
                 console.log(parsed_json)
@@ -39,41 +39,31 @@ var lifxBulbGetStatus = function lifxBulbGetStatus(nextFunction) {
 var lifxBulbTogglePower = function lifxBulbTogglePower() {
     if (power == 'off') {
         power = 'on';
-        document.getElementById('lifxPower').innerHTML = power;
-        document.getElementById('lifxPowerTurn').innerHTML = 'OFF';
     } else {
         power = 'off';
-        document.getElementById('lifxPower').innerHTML = power;
-        document.getElementById('lifxPowerTurn').innerHTML = 'ON';
     }
 };
 
-var lifxBulbChangeBrightness = function lifxBulbChangeBrightness(delta) {
-    brightness += delta;
-    brightness = Math.max(brightness, 0);
-    brightness = Math.min(brightness, 100);
-    document.getElementById('lifxBrightness').innerHTML = brightness;
+var lifxBulbChangeBrightness = function lifxBulbChangeBrightness() {
+    brightness = document.getElementById('light-slider-brightness').value;
 };
 
-var lifxBulbChangeTemperature = function lifxBulbChangeTemperature(delta) {
-    colorKelvin += delta;
-    colorKelvin = Math.max(colorKelvin, 2500);
-    colorKelvin = Math.min(colorKelvin, 9000);
-    document.getElementById('lifxTemperature').innerHTML = colorKelvin;
+var lifxBulbChangeTemperature = function lifxBulbChangeTemperature() {
+    colorKelvin = document.getElementById('light-slider-temperature').value;
 };
 
-var lifxBulbChangeHue = function lifxBulbChangeHue(delta) {
-    colorHue += delta;
-    colorHue = Math.max(colorHue, 0);
-    colorHue = Math.min(colorHue, 360);
-    document.getElementById('lifxHue').innerHTML = colorHue;
+var lifxBulbChangeHue = function lifxBulbChangeHue() {
+    colorHue = document.getElementById('light-slider-hue').value;
+
+    console.log(stylesheet);
+    stylesheet.deleteRule(3);
+    stylesheet.insertRule('.light-slider-saturation-input {background: linear-gradient(to right, hsl(' + colorHue + ', 0%, 50%), hsl(' + colorHue + ', 100%, 50%)) !important;}', 3);
+    console.log(stylesheet);
 };
 
-var lifxBulbChangeSaturation = function lifxBulbChangeSaturation(delta) {
-    colorSaturation += delta;
-    colorSaturation = Math.max(colorSaturation, 0);
-    colorSaturation = Math.min(colorSaturation, 100);
-    document.getElementById('lifxSaturation').innerHTML = colorSaturation;
+var lifxBulbChangeSaturation = function lifxBulbChangeSaturation() {
+    colorSaturation = document.getElementById('light-slider-saturation').value;
+    document.getElementById('light-value-saturation').innerHTML = colorSaturation;
 };
 
 var lifxBulbSetState = function lifxBulbSetState() {
@@ -117,35 +107,71 @@ var populateLifxControl = function populateLifxControl() {
     console.log('You opened it up!')
     var htmlForLifxControl = '';
     var lightControlDiv = document.getElementById('light-control');
-    htmlForLifxControl += '<b><i>' + lightLabel + '</i></b>';
 
     if (connected == true) {
-        htmlForLifxControl += '<br><b>Powered</b> <span id="lifxPower">' + power + '</span>';
-        if (power == 'off') {
-            htmlForLifxControl += ' <a onclick="lifxBulbTogglePower()" href="javascript:void(0);">TURN <span id="lifxPowerTurn">ON</span></a>';
-        } else {
-            htmlForLifxControl += ' <a onclick="lifxBulbTogglePower()" href="javascript:void(0);">TURN <span id="lifxPowerTurn">OFF</span></a>';
+        var poweredCheckbox = '';
+        if (power == 'on') {
+            poweredCheckbox = ' checked';
         }
 
-        htmlForLifxControl += '<br><a onclick="lifxBulbChangeBrightness(-3)" href="javascript:void(0);">DOWN</a> ';
-        htmlForLifxControl += '<b>Brightness</b> <span id="lifxBrightness">' + brightness + '</span>';
-        htmlForLifxControl += ' <a onclick="lifxBulbChangeBrightness(3)" href="javascript:void(0);">UP</a>';
+        var hueFileName = 'icons/hue-black.png';
+        if (overnightMode == true) {
+            hueFileName = 'icons/hue-white.png';
+        }
 
-        htmlForLifxControl += '<br><a onclick="lifxBulbChangeTemperature(-250)" href="javascript:void(0);">WARMER</a> ';
-        htmlForLifxControl += '<b>Temperature</b> <span id="lifxTemperature">' + colorKelvin + '</span>';
-        htmlForLifxControl += ' <a onclick="lifxBulbChangeTemperature(250)" href="javascript:void(0);">COOLER</a>';
+        htmlForLifxControl += '<span class="light-row">';
+        htmlForLifxControl += '<span class="light-label-title">' + lightLabel + '</span>&nbsp;&nbsp;&nbsp;&nbsp;';
+        htmlForLifxControl += '<span class="light-input-toggle"><label class="light-toggle"><input type="checkbox" id="lifxPowerTurn"' + poweredCheckbox + '><span class="light-toggle-power"></span></label></span>';
+        htmlForLifxControl += '</span>';
 
-        htmlForLifxControl += '<br><a onclick="lifxBulbChangeHue(-15)" href="javascript:void(0);">DOWN</a> ';
-        htmlForLifxControl += '<b>Hue</b> <span id="lifxHue">' + colorHue + '</span>';
-        htmlForLifxControl += ' <a onclick="lifxBulbChangeHue(15)" href="javascript:void(0);">UP</a>';
+        htmlForLifxControl += '<span class="light-row">';
+        htmlForLifxControl += '<i class="wi wi-day-sunny light-label"></i>';
+        htmlForLifxControl += '<span class="light-input"><label class="light-slider"><input type="range" min="1" max="100" value="' + brightness + '" class="light-slider-input" id="light-slider-brightness"></label></span>';
+        htmlForLifxControl += '</span>';
 
-        htmlForLifxControl += '<br><a onclick="lifxBulbChangeSaturation(-3)" href="javascript:void(0);">DOWN</a> ';
-        htmlForLifxControl += '<b>Saturation</b> <span id="lifxSaturation">' + colorSaturation + '</span>';
-        htmlForLifxControl += ' <a onclick="lifxBulbChangeSaturation(3)" href="javascript:void(0);">UP</a>';
+        htmlForLifxControl += '<span class="light-row">';
+        htmlForLifxControl += '<i class="wi wi-thermometer light-label"></i>';
+        htmlForLifxControl += '<span class="light-input"><label class="light-slider"><input type="range" min="2500" max="9000" value="' + colorKelvin + '" class="light-slider-input light-slider-temperature-input" id="light-slider-temperature" step="100"></label></span>';
+        htmlForLifxControl += '</span>';
+
+        htmlForLifxControl += '<span class="light-row">';
+        htmlForLifxControl += '<span class="light-label"><img src="' + hueFileName + '" height="46px"></img></span>';
+        htmlForLifxControl += '<span class="light-input"><label class="light-slider"><input type="range" min="1" max="360" value="' + colorHue + '" class="light-slider-input light-slider-hue-input" id="light-slider-hue"></label></span>';
+        htmlForLifxControl += '</span>';
+
+        htmlForLifxControl += '<span class="light-row">';
+        htmlForLifxControl += '<i class="wi wi-humidity light-label"></i>';
+        htmlForLifxControl += '<span class="light-input"><label class="light-slider"><input type="range" min="0" max="100" value="' + colorSaturation + '" class="light-slider-input light-slider-saturation-input" id="light-slider-saturation"></label></span>';
+        htmlForLifxControl += '</span>';
+
+        stylesheet.deleteRule(3);
+        stylesheet.insertRule('.light-slider-saturation-input {background: linear-gradient(to right, hsl(' + colorHue + ', 0%, 50%), hsl(' + colorHue + ', 100%, 50%)) !important;}', 3);
+    
     } else {
-        htmlForLifxControl += '<br><i><b>Error:</b> This light bulb is not connected!</i>';
+        htmlForLifxControl += '<b><i>' + lightLabel + '</i></b><br><i><b>Error:</b> This light bulb is not connected!</i>';
     }
 
-    lightControlDiv.style.display = 'inline';
+    lightControlDiv.style.display = 'inline-block';
     lightControlDiv.innerHTML = htmlForLifxControl;
+
+    $('#lifxPowerTurn').bind('change', function(){
+            lifxBulbTogglePower();
+    });
+
+    $('#light-slider-brightness').bind('input', function(){
+            lifxBulbChangeBrightness();
+    });
+
+    $('#light-slider-temperature').bind('input', function(){
+            lifxBulbChangeTemperature();
+    });
+
+    $('#light-slider-hue').bind('input', function(){
+            lifxBulbChangeHue();
+    });
+
+    $('#light-slider-saturation').bind('input', function(){
+            lifxBulbChangeSaturation();
+    });
+
 };
