@@ -305,6 +305,21 @@ td {
 	width: fill-available;
 }
 
+.light-slider-group {
+	transition: transform 0.3s ease-out;
+	height: auto;
+	transform: scaleY(1);
+	transform-origin: top;
+}
+
+.light-slider-group.collapsed {
+	transform: scaleY(0);
+}
+
+.light-slider-group.collapsed {
+	transform: scaleY(0);
+}
+
 .light-row {
 	display: flex;
 	padding-bottom: 20px;
@@ -320,7 +335,7 @@ td {
 	font-size: 50px;
 	flex: 20%;
 	text-align: center;
-	height: 45px;
+	height: 47px;
 }
 
 .light-input {

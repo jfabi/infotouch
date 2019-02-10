@@ -34,13 +34,20 @@ var lifxBulbGetStatus = function lifxBulbGetStatus(nextFunction) {
         });
     });
 };
-//setInterval(transitPredictionsUpdate,30000);
 
 var lifxBulbTogglePower = function lifxBulbTogglePower() {
     if (power == 'off') {
         power = 'on';
+        document.querySelector('.light-slider-group').classList.toggle('collapsed');
+        // document.querySelector('.light-input').classList.toggle('collapsed');
+        // $('.light-label').css('visibility','visible');
+        // $('.light-input').css('visibility','visible');
     } else {
         power = 'off';
+        document.querySelector('.light-slider-group').classList.toggle('collapsed');
+        // document.querySelector('.light-input').classList.toggle('collapsed');
+        // $('.light-label').css('visibility','hidden');
+        // $('.light-input').css('visibility','hidden');
     }
 };
 
@@ -63,7 +70,6 @@ var lifxBulbChangeHue = function lifxBulbChangeHue() {
 
 var lifxBulbChangeSaturation = function lifxBulbChangeSaturation() {
     colorSaturation = document.getElementById('light-slider-saturation').value;
-    document.getElementById('light-value-saturation').innerHTML = colorSaturation;
 };
 
 var lifxBulbSetState = function lifxBulbSetState() {
@@ -124,6 +130,7 @@ var populateLifxControl = function populateLifxControl() {
         htmlForLifxControl += '<span class="light-input-toggle"><label class="light-toggle"><input type="checkbox" id="lifxPowerTurn"' + poweredCheckbox + '><span class="light-toggle-power"></span></label></span>';
         htmlForLifxControl += '</span>';
 
+        htmlForLifxControl += '<div class="light-slider-group">';
         htmlForLifxControl += '<span class="light-row">';
         htmlForLifxControl += '<i class="wi wi-day-sunny light-label"></i>';
         htmlForLifxControl += '<span class="light-input"><label class="light-slider"><input type="range" min="1" max="100" value="' + brightness + '" class="light-slider-input" id="light-slider-brightness"></label></span>';
@@ -143,6 +150,7 @@ var populateLifxControl = function populateLifxControl() {
         htmlForLifxControl += '<i class="wi wi-humidity light-label"></i>';
         htmlForLifxControl += '<span class="light-input"><label class="light-slider"><input type="range" min="0" max="100" value="' + colorSaturation + '" class="light-slider-input light-slider-saturation-input" id="light-slider-saturation"></label></span>';
         htmlForLifxControl += '</span>';
+        htmlForLifxControl += '</div>';
 
         stylesheet.deleteRule(3);
         stylesheet.insertRule('.light-slider-saturation-input {background: linear-gradient(to right, hsl(' + colorHue + ', 0%, 50%), hsl(' + colorHue + ', 100%, 50%)) !important;}', 3);
@@ -153,6 +161,10 @@ var populateLifxControl = function populateLifxControl() {
 
     lightControlDiv.style.display = 'inline-block';
     lightControlDiv.innerHTML = htmlForLifxControl;
+
+    if (power == 'off') {
+        document.querySelector('.light-slider-group').classList.toggle('collapsed');
+    }
 
     $('#lifxPowerTurn').bind('change', function(){
             lifxBulbTogglePower();
