@@ -7,6 +7,7 @@ var currentTempC = 0;
 var tempString = '';
 var currentIsDaytime = 'Nighttime';
 var currentWeather = '';
+var statsMode = '';
 var overnightMode = false;
 var colorClass = 'normal-colors';
 var inverseColorClass = 'overnight-colors';
@@ -16,7 +17,8 @@ var currentStatsUpdate = function currentStatsUpdate() {
     var currentTime = new Date();
     htmlForCurrentStats = '<table id="header-container" class="normal-colors"><tr>'
     htmlForCurrentStats += '<td style="width: 27%; text-align: left;" class="app-title"><b>infoTouch</b> by jfabi</td>'
-    if (currentTime.getSeconds() % 10 < 5 && overnightMode == false) {
+
+    if ((currentTime.getSeconds() % 10 < 5 && overnightMode == false) || statsMode == 'weather-forecast-open' || statsMode == 'light-control-open') {
         // Show clock time, day of week
         var dayOfWeek = currentTime.getDay();
         var daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -43,12 +45,21 @@ var currentStatsUpdate = function currentStatsUpdate() {
         htmlForCurrentStats += '</a></td>'
     }
 
-    // Light bulb icons created by Numero Uno from Noun Project (CC)
-    var bulbFileName = 'bulb-unlit-black.png';
-    if (overnightMode == true) {
-        bulbFileName = 'bulb-unlit-white.png';
+    if (statsMode == 'weather-forecast-open') {
+        // Upper-right button for closing weather forecast
+        htmlForCurrentStats += '<td style="width: 7%; text-align: right; vertical-align: inherit;"><a onclick="showWeatherForecast()" href="javascript:void(0);" class="inverse-colors header-close-button">&#10006;</a></td>'
+    } else if (statsMode == 'light-control-open') {
+        // Upper-right button for closing light control
+        htmlForCurrentStats += '<td style="width: 7%; text-align: right; vertical-align: inherit;"><a onclick="showLifxControl()" href="javascript:void(0);" class="inverse-colors header-close-button">&#10006;</a></td>'
+    } else {
+        // Light bulb icons created by Numero Uno from Noun Project (CC)
+        var bulbFileName = 'bulb-unlit-black.png';
+        if (overnightMode == true) {
+            bulbFileName = 'bulb-unlit-white.png';
+        }
+        htmlForCurrentStats += '<td style="width: 7%; text-align: right; vertical-align: inherit;"><a onclick="showLifxControl()" href="javascript:void(0);" class="normal-colors"><img src="icons/' + bulbFileName + '" height="58px"></a></td>'
     }
-    htmlForCurrentStats += '<td style="width: 7%; text-align: right; vertical-align: inherit;"><a onclick="showLifxControl()" href="javascript:void(0);" class="' + 'normal-colors' + '"><img src="icons/' + bulbFileName + '" height="58px"></a></td>'
+
     htmlForCurrentStats += '</tr>'
     htmlForCurrentStats += '</table><div class="header-delineator ' + 'inverse-colors' + '"></div>'
 

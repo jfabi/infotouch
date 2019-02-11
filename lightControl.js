@@ -100,7 +100,11 @@ var showLifxControl = function showLifxControl() {
 
     if (lightControlDiv.style.display == 'none') {
         lifxBulbGetStatus(populateLifxControl);
+        statsMode = 'light-control-open';
+        currentStatsUpdate();
     } else {
+        statsMode = '';
+        currentStatsUpdate();
         lightControlDiv.style.display = 'none';
         console.log('You closed it up!')
         // Update light bulb with parameters set in menu

@@ -78,15 +78,16 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
 };
 
 var showWeatherForecast = function showWeatherForecast() {
-
     var weatherForecastDiv = document.getElementById('weather-forecast');
-
     if (weatherForecastDiv.style.display == 'none') {
         weatherForecastDiv.style.display = 'inline-block';
+        statsMode = 'weather-forecast-open';
+        currentStatsUpdate();
     } else {
         weatherForecastDiv.style.display = 'none';
         console.log('You closed it up!')
-        // weatherForecastDiv.innerHTML = '';
+        statsMode = '';
+        currentStatsUpdate();
     }
 };
 

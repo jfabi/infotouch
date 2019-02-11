@@ -141,9 +141,18 @@ body {
 }
 
 #header-container {
-	padding: 10px 10px 0px 10px;
+	padding: 10px 7px 0px 7px;
 	font-size: 26px;
 	margin-top: -20px;
+}
+
+.header-close-button {
+	font-size: 76px;
+	font-weight: 500;
+	vertical-align: inherit;
+	bottom: 0;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .header-larger {
