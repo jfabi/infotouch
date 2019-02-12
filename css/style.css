@@ -119,8 +119,6 @@ body {
 }
 
 .message-status {
-	webkit-border-radius: 2rem;
-	border-radius: 2rem;
 	padding: .125rem 1.25rem;
 	font-weight: 700;
 	display: flex;

@@ -89,27 +89,38 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         lastDisplayId = displayId;
         lastDisplayText = displayText;
 
-        textSize = '32px'
+        textSize = '32px';
         textColor = textColorLookup[displayId];
         backgroundColor = backgroundColorLookup[displayId];
+        borderRadius = '2rem';
+
+        displayText = "Ur attentn! Plzz just wn to wind it okay how abootu we just sit and tal awhillz hmm?";
 
         if (displayText.length < 11) {
             textSize = '121px';
+            borderRadius = '8rem';
         } else if (displayText.length < 17) {
             textSize = '96px';
+            borderRadius = '8rem';
         } else if (displayText.length < 25) {
             textSize = '84px';
+            borderRadius = '4rem';
         } else if (displayText.length < 40) {
             textSize = '74px';
+            borderRadius = '4rem';
         } else if (displayText.length < 70) {
             textSize = '60px';
+            borderRadius = '4rem';
         } else if (displayText.length < 140) {
             textSize = '40px';
+            borderRadius = '3rem';
         }
 
         htmlForMessageStatus = '';
         htmlForMessageStatus += '<div class="message-status message-container" style="color: ' + textColor;
-        htmlForMessageStatus += '; background-color: ' + backgroundColor + '; font-size: ' + textSize + '">' + displayText;
+        htmlForMessageStatus += '; background-color: ' + backgroundColor + '; font-size: ' + textSize;
+        htmlForMessageStatus += '; webkit-border-radius: ' + borderRadius + '; border-radius: ' + borderRadius;
+        htmlForMessageStatus += ';">' + displayText;
         htmlForMessageStatus += '</div>';
         
         if (document.getElementById('message-status') == null) {
