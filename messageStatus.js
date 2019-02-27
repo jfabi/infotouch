@@ -94,8 +94,6 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         backgroundColor = backgroundColorLookup[displayId];
         borderRadius = '2rem';
 
-        displayText = "Ur attentn! Plzz just wn to wind it okay how abootu we just sit and tal awhillz hmm?";
-
         if (displayText.length < 11) {
             textSize = '121px';
             borderRadius = '8rem';
