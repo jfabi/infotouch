@@ -53,6 +53,10 @@ body {
 
 .transit-alert-container {
 	padding: 10px;
+	height: -moz-available;
+	height: -webkit-fill-available;
+	height: fill-available;
+	min-height: 385px;
 }
 
 .transit-alert-route {
@@ -76,9 +80,11 @@ body {
 	height: -moz-available;
 	height: -webkit-fill-available;
 	height: fill-available;
+	min-height: 385px;
 }
 
 .weather-alert-severe {
+	color: black;
 	background-color: yellow;
 }
 
@@ -115,7 +121,14 @@ body {
 }
 
 .message-container {
-	margin: 40px 10px 10px 10px
+	margin: 40px 10px 10px 10px;
+}
+
+#message-status {
+	height: -moz-available;
+	height: -webkit-fill-available;
+	height: fill-available;
+	min-height: 385px;
 }
 
 .message-status {
@@ -137,6 +150,7 @@ body {
 	text-align: center;
 	font-weight: 700;
 	padding-top: 50px;
+	min-height: 385px;
 }
 
 #header-container {
@@ -185,8 +199,10 @@ body {
 
 .weather-forecast-container {
 	margin: 10px;
+	height: -moz-available;
 	height: -webkit-fill-available;
 	height: fill-available;
+	min-height: 385px;
 	width: -webkit-fill-available;
 	width: fill-available;
 }
@@ -307,8 +323,10 @@ td {
 
 .light-control-container {
 	margin: 10px;
+	height: -moz-available;
 	height: -webkit-fill-available;
 	height: fill-available;
+	min-height: 385px;
 	width: -webkit-fill-available;
 	width: fill-available;
 }

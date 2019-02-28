@@ -51,9 +51,9 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     htmlForWarning += '<div class="weather-alert-container ' + alertBackground + '"><h2>'
                     htmlForWarning += '<div class="weather-alert-type ' + alertTypeColors + '">';
                     htmlForWarning += alertName + '</div>';
-                    htmlForWarning += '<span class="weather-alert-expire">Until ' + expiresDay + ' ';
+                    htmlForWarning += '<span class="weather-alert-expire ' + alertBackground + '">Until ' + expiresDay + ' ';
                     htmlForWarning += expiresHours + ':' + expiresMins + ''
-                    htmlForWarning += '</h2>' + description + '</div>';
+                    htmlForWarning += '</h2><span class="' + alertBackground + '">' + description + '</span></div>';
 
                     parsedWarning = {};
                     parsedWarning['alertId'] = alert['id'];
