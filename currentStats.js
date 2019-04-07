@@ -81,7 +81,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
         if (minute < 10) {
             minute = "0" + minute;
         }
-        document.getElementById('overnight-mode').innerHTML = hour + ':' + minute;
+        document.getElementById('overnight-mode').innerHTML = '<div class="overnight-mode-container">' + hour + ':' + minute + '</div>';
     } else {
         if (overnightModeDiv != null) {
             // Remove overnight-mode div from Slick and body

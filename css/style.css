@@ -150,6 +150,12 @@ body {
 	text-align: center;
 	font-weight: 700;
 	padding-top: 50px;
+}
+
+.overnight-mode-container {
+	height: -moz-available;
+	height: -webkit-fill-available;
+	height: fill-available;
 	min-height: 385px;
 }
 
