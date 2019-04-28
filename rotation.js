@@ -5,7 +5,8 @@ $(document).ready(function(){
     autoplay: true,
     autoplaySpeed: 5000,
     speed: 0,
-    adaptiveHeight: true
+    adaptiveHeight: true,
+    pauseOnHover: false,
   });
 
   $('.rotation-group').slick('slickFilter', '.rotation-include');
