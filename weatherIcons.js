@@ -38,6 +38,10 @@ var weatherIconClass = function weatherIconClass(casedCondition,isDaytime) {
 		iconClass = 'showers';
 	} else if (condition.includes('sprinkles')) {
 		iconClass = 'sprinkle';
+	} else if (condition.includes('light rain')) {
+		iconClass = 'sprinkle';
+	} else if (condition.includes('rain')) {
+		iconClass = 'raub';
 	} else if (condition.includes('smoke')) {
 		iconClass = 'smoke';
 	} else if (condition.includes('dust')) {
