@@ -45,29 +45,36 @@ var twitterGetLatestStatuses = function twitterGetLatestStatuses() {
             var mostRecentAnnounceText = '';
             var mostRecentAnnounceId = '';
 
-            for (i = reply.length - 1; i >= 0; i--) {
-                if (reply[i]['text'].length > 2) {
-                    var id = reply[i]['text'].substr(0,1);
-                    var text = reply[i]['text'].substr(2);
-                    var announceIdSet = 'xXyYzZ';
-                    var secondsSinceTweet = (Date.now() - (new Date(reply[i]['created_at'])).getTime()) / 1000;
+            if (reply != null) {
+                for (i = reply.length - 1; i >= 0; i--) {
+                    if (reply[i]['text'].length > 2) {
+                        var id = reply[i]['text'].substr(0,1);
+                        var text = reply[i]['text'].substr(2);
+                        var announceIdSet = 'xXyYzZ';
+                        var secondsSinceTweet = (Date.now() - (new Date(reply[i]['created_at'])).getTime()) / 1000;
 
-                    if (announceIdSet.includes(id)) {
-                        mostRecentAnnounceId = id;
-                        mostRecentAnnounceText = text;
-                    } else {
-                        mostRecentDisplayId = id;
-                        mostRecentDisplayText = text;
+                        if (announceIdSet.includes(id)) {
+                            mostRecentAnnounceId = id;
+                            mostRecentAnnounceText = text;
+                        } else {
+                            mostRecentDisplayId = id;
+                            mostRecentDisplayText = text;
+                        }
                     }
                 }
+                twitterStatusUpdate(mostRecentDisplayId,mostRecentDisplayText,mostRecentAnnounceId,mostRecentAnnounceText,secondsSinceTweet);
             }
-            twitterStatusUpdate(mostRecentDisplayId,mostRecentDisplayText,mostRecentAnnounceId,mostRecentAnnounceText,secondsSinceTweet);
         }
     );
 };
 
 var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,announceId,announceText,secondsSinceTweet) {
     timeSinceTweetText = '';
+
+    if (secondsSinceTweet == '' || displayText == '') {
+        // Likely means bad response from Codebird
+        return;
+    }
 
     if (secondsSinceTweet != null && secondsSinceTweet != '') {
         // Time passed initially in seconds
@@ -83,9 +90,6 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
     }
     
     if ((lastDisplayId != displayId || lastDisplayText != displayText) && displayText != '') {
-        console.log('UPDATE IN DISPLAY TEXT !!!')
-        console.log(displayId)
-        console.log(displayText)
         lastDisplayId = displayId;
         lastDisplayText = displayText;
 
@@ -159,4 +163,4 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
 };
 
 twitterGetLatestStatuses();
-setInterval(twitterGetLatestStatuses,115000);
+setInterval(twitterGetLatestStatuses,30000);
