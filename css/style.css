@@ -13,6 +13,10 @@ body {
 	min-height: 100vh;
 }
 
+.slick-list {
+	min-height: 100vh;
+}
+
 .transit-first-prediction {
 	font-weight: 700;
 }
