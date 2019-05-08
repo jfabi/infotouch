@@ -85,6 +85,7 @@ var rotationUpdate = function rotationUpdate() {
 		    	console.log("Mode U")
 		    	console.log(slickIndex)
 		    	messageStatusDiv.style.display = 'none';
+		    	lastDisplayText = '';
 		    	if (slickIndex != null) {
 		    		console.log("")
 		    		console.log(" !!!!! REMOVING TWITTER")
