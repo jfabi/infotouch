@@ -7,6 +7,7 @@ $(document).ready(function(){
     speed: 0,
     adaptiveHeight: true,
     pauseOnHover: false,
+    useTransform: false,
   });
 
   $('.rotation-group').slick('slickFilter', '.rotation-include');
@@ -22,10 +23,10 @@ var rotationUpdate = function rotationUpdate() {
     var currentTime = new Date();
 
     // FUTURE: Replace with config.js variables
-    var weekdayPredict = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() <= 6
-    var sundayPredict = currentTime.getHours() >= 9 && currentTime.getHours() < 24 && (currentTime.getDay() == 0 || currentTime.getDay() == 7)
-    var weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 10 && currentTime.getDay() > 0 && currentTime.getDay() < 6
-    var displayAlertsMinor = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() < 6
+    weekdayPredict = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() <= 6
+    sundayPredict = currentTime.getHours() >= 9 && currentTime.getHours() < 24 && (currentTime.getDay() == 0 || currentTime.getDay() == 7)
+    weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 9 && currentTime.getDay() > 0 && currentTime.getDay() < 6
+    displayAlertsMinor = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() < 6
 
     overnightMode = currentTime.getHours() >= 1 && currentTime.getHours() <= 6
     if (overnightMode == false) {

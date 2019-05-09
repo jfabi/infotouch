@@ -9,6 +9,9 @@ var currentIsDaytime = 'Nighttime';
 var currentWeather = '';
 var statsMode = '';
 var overnightMode = false;
+var weekdayPredict = true;
+var sundayPredict = true;
+var weekdayHideTwitter = false;
 var colorClass = 'normal-colors';
 var inverseColorClass = 'overnight-colors';
         

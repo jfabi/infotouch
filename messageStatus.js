@@ -36,6 +36,7 @@ var textColorLookup = {
 var twitterParams = 'screen_name=' + encodeURIComponent('jfabi_info') + '&count=5';
         
 var twitterGetLatestStatuses = function twitterGetLatestStatuses() {
+    console.log('NOW ABOUT TO CALL TWITTER !!!')
     codebird.__call(
         'statuses_userTimeline',
         twitterParams,
@@ -46,6 +47,8 @@ var twitterGetLatestStatuses = function twitterGetLatestStatuses() {
             var mostRecentAnnounceId = '';
 
             if (reply != null) {
+                console.log('REPLY WAS OKAY :) !!!!')
+                console.log(reply)
                 for (i = reply.length - 1; i >= 0; i--) {
                     if (reply[i]['text'].length > 2) {
                         var id = reply[i]['text'].substr(0,1);
@@ -62,7 +65,13 @@ var twitterGetLatestStatuses = function twitterGetLatestStatuses() {
                         }
                     }
                 }
+                console.log(mostRecentDisplayId)
+                console.log(mostRecentDisplayText)
+                console.log(secondsSinceTweet)
+                console.log('SENDING OUT TO twitterStatusUpdate')
                 twitterStatusUpdate(mostRecentDisplayId,mostRecentDisplayText,mostRecentAnnounceId,mostRecentAnnounceText,secondsSinceTweet);
+            } else {
+                console.log('REPLY WAS NULL !!! ')
             }
         }
     );
@@ -72,6 +81,7 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
     timeSinceTweetText = '';
 
     if (secondsSinceTweet == '' || displayText == '') {
+        console.log('BAD RETURN OOPS 001')
         // Likely means bad response from Codebird
         return;
     }
@@ -89,7 +99,16 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         }
     }
     
-    if ((lastDisplayId != displayId || lastDisplayText != displayText) && displayText != '') {
+    console.log('DOING THAT COMPARISON NOW')
+    console.log(lastDisplayId)
+    console.log(displayId)
+    console.log(lastDisplayText)
+    console.log(displayText)
+    if (overnightMode || weekdayHideTwitter) {
+        console.log('WAIT...it is LATE OVERNIGHT / TWEET BLOCK PERIOD, DO NOT DO ANYTHING FURTHER')
+        return;
+    } else if ((lastDisplayId != displayId || lastDisplayText != displayText) && displayText != '') {
+        console.log('HEY WE GOT A NEW TWEET !!!')
         lastDisplayId = displayId;
         lastDisplayText = displayText;
 
@@ -139,6 +158,7 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
 
         document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
     } else {
+        console.log('NO CHANGE IN TWEET..........')
         htmlForMessageAgo = '';
         htmlForMessageAgo = '<h4 class="message-last-updated">' + timeSinceTweetText;
         htmlForMessageAgo += '</h4>';
