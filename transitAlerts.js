@@ -73,11 +73,20 @@ var severityCategoryLookup = {
         
 var transitAlertsUpdate = function nextServiceUpdate() {
 
+    // Testing 19 May
+    console.log("((( CHECKING TRANSIT ALERTS NOW - PREVIOUS OPEN:")
+    console.log(currentTransitAlertsIds)
+    console.log("((( - - - - - - - - - - -")
+
     jQuery(document).ready(function($) {
         $.ajax({
             url : "https://api-v3.mbta.com/alerts?include=routes&" + routesFilter,
             dataType : "json",
             success : function(parsed_json) {
+
+                // Testing 19 May
+                console.log("((( GOOD RESPONSE RE ALERTS")
+                console.log("((( - - - - - - - - - - -")
 
                 var allAlerts = parsed_json['data'];
                 var allIncluded = parsed_json['included'];
@@ -214,11 +223,17 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     console.log(divId)
 
                     if (document.getElementById(divId) == null) {
+                        // Testing 19 May
+                        console.log("((( ABOVE ALERT NEW - CREATING NEW DIV")
+                        console.log("((( - - - - - - - - - - -")
                         $('#main').append('<div id=' + divId + '></div>');
                         currentTransitAlertsIds.push(parsedAlerts[i]['alertId']);
                         document.getElementById(divId).innerHTML = parsedAlerts[i]['html'];
                         $('.rotation-group').slick('slickAdd', '#' + divId);
                     } else {
+                        // Testing 19 May
+                        console.log("((( ABOVE ALERT ALREADY OPEN, NO ACTION")
+                        console.log("((( - - - - - - - - - - -")
                         document.getElementById(divId).innerHTML = parsedAlerts[i]['html'];
                     } 
                 }
@@ -226,15 +241,27 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                 // Check if all currentTransitAlertsDivIds are still active alerts
                 console.log(currentTransitAlertsIds);
                 currentTransitAlertsIdsCopy = Object.assign([], currentTransitAlertsIds);
+                // Testing 19 May
+                console.log("((( - - - - - - - - - - -")
 
                 for (i = 0; i < currentTransitAlertsIdsCopy.length; i++) {
+                    // Testing 19 May
+                    console.log("((( BEGIN TO CHECK FOR ALERT ID...")
+                    console.log(currentTransitAlertsIdsCopy[i])
+                    console.log(" ")
                     var alertStillActive = false;
                     for (j = 0; j < parsedAlerts.length; j++) {
+                        // Testing 19 May
+                        console.log("((( CURRENTLY CHECKING AGAINST...")
+                        console.log(parsedAlerts[j]['alertId'])
+                        console.log(" ")
                         if (parsedAlerts[j]['alertId'] == currentTransitAlertsIdsCopy[i]) {
                             alertStillActive = true;
                             break;
                         }
                     }
+                    // Testing 19 May
+                    console.log(alertStillActive)
                     if (alertStillActive == false) {
                         // This means alert is not active: remove from list, rotation, html
                         console.log("")
@@ -244,7 +271,12 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         console.log(document.getElementById('transit-alert-' + currentTransitAlertsIdsCopy[i]))
                         console.log("")
                         if ($('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index') != null) {
+                            // Testing 19 May
+                            console.log("((( APPARENTLY IT IS BEING REMOVED NOW.......")
                             $('.rotation-group').slick('slickRemove', $('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index'));
+                        } else {
+                            // Testing 19 May
+                            console.log("((( !!! NOT ACTUALLY REMOVED ALERT ALERT")
                         }
                         currentTransitAlertsIds.splice(i, 1);
                     }
