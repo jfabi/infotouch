@@ -65,7 +65,7 @@ var severityCategoryLookup = {
     3: 'minor',
     4: 'moderate',
     5: 'moderate',
-    6: 'moderate',
+    6: 'severe',
     7: 'severe',
     8: 'severe',
     9: 'severe'
@@ -192,12 +192,18 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         continue;
                     }
                     if (infoAboutAlerts[i]['severityCategory'] == 'severe' && displayAlertsSevere == false && displayAlertsMinor == false) {
+                        console.log("Removing alert due to displayAlertsSevere == false")
+                        console.log(infoAboutAlerts[i]['alertId'])
                         continue;
                     }
                     if (infoAboutAlerts[i]['severityCategory'] != 'severe' && displayAlertsMinor == false) {
+                        console.log("Removing alert due to displayAlertsMinor == false")
+                        console.log(infoAboutAlerts[i]['alertId'])
                         continue;
                     }
                     if (overnightMode == true) {
+                        console.log("Removing alert due to overnightMode == true")
+                        console.log(infoAboutAlerts[i]['alertId'])
                         continue;
                     }
                     htmlForAlert = ''; 
@@ -273,12 +279,37 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         if ($('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index') != null) {
                             // Testing 19 May
                             console.log("((( APPARENTLY IT IS BEING REMOVED NOW.......")
-                            $('.rotation-group').slick('slickRemove', $('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index'));
+                            console.log("((( REMOVING INDEX......")
+                            console.log($('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index'))
+                            $('.rotation-group').slick('slickRemove', $('#transit-alert-' + currentTransitAlertsIdsCopy[i]).attr('data-slick-index'))
+                            // Testing 19 May
+                            if (document.getElementById('transit-alert-' + currentTransitAlertsIdsCopy[i]) == null) {
+                                console.log("((( BEFORE SPLICE")
+                                console.log(currentTransitAlertsIds)
+                                indexToSplice = currentTransitAlertsIds.indexOf(currentTransitAlertsIdsCopy[i])
+                                console.log("((( SPLICING AT INDEX...")
+                                console.log(indexToSplice)
+                                currentTransitAlertsIds.splice(indexToSplice, 1);
+                                // Testing 19 May
+                                console.log("((( AFTER SPLICE")
+                                console.log(currentTransitAlertsIds)
+                            } else {
+                                console.log("((( ERROR : DID NOT ACTUALLY REMOVE SLIDE .........")
+                                console.log(currentTransitAlertsIds)
+                            }
                         } else {
                             // Testing 19 May
-                            console.log("((( !!! NOT ACTUALLY REMOVED ALERT ALERT")
+                            console.log("((( !!! NOT ACTUALLY REMOVED ALERT ALERT...PROBABLY ALREADY GONE")
+                            console.log("((( BEFORE SPLICE")
+                            console.log(currentTransitAlertsIds)
+                            indexToSplice = currentTransitAlertsIds.indexOf(currentTransitAlertsIdsCopy[i])
+                            console.log("((( SPLICING AT INDEX...")
+                            console.log(indexToSplice)
+                            currentTransitAlertsIds.splice(indexToSplice, 1);
+                            // Testing 19 May
+                            console.log("((( AFTER SPLICE")
+                            console.log(currentTransitAlertsIds)
                         }
-                        currentTransitAlertsIds.splice(i, 1);
                     }
                 }
             }

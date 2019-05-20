@@ -13,8 +13,6 @@ var severeWeatherUpdate = function nextServiceUpdate() {
             url : "https://api.weather.gov/alerts?active=1&point=" + weatherPoint,
             dataType : "json",
             success : function(parsed_json) {
-                console.log("just downloaded")
-
                 var allAlerts = parsed_json['features'];
                 var parsedWarnings = [];
                 var currentSevereImmediateInternal = false;
@@ -135,17 +133,38 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                         console.log("")
                         if ($('#severe-weather-' + currentWeatherWarningsIdsCopy[i]).attr('data-slick-index') != null) {
                             $('.rotation-group').slick('slickRemove', $('#severe-weather-' + currentWeatherWarningsIdsCopy[i]).attr('data-slick-index'));
+                            if (document.getElementById('severe-weather-' + currentWeatherWarningsIdsCopy[i]) == null) {
+                                console.log("*** BEFORE SPLICE")
+                                console.log(currentWeatherWarningsIds)
+                                indexToSplice = currentWeatherWarningsIds.indexOf(currentWeatherWarningsIdsCopy[i])
+                                console.log("*** SPLICING AT INDEX...")
+                                console.log(indexToSplice)
+                                currentWeatherWarningsIds.splice(indexToSplice, 1);
+                                // Testing 19 May
+                                console.log("*** AFTER SPLICE")
+                                console.log(currentWeatherWarningsIds)
+                            } else {
+                                console.log("*** ERROR : DID NOT ACTUALLY REMOVE SLIDE .........")
+                                console.log(currentWeatherWarningsIds)
+                            }
+                        } else {
+                            // Testing 19 May
+                            console.log("*** !!! NOT ACTUALLY REMOVED ALERT ALERT...PROBABLY ALREADY GONE")
+                            console.log("*** BEFORE SPLICE")
+                            console.log(currentWeatherWarningsIds)
+                            indexToSplice = currentWeatherWarningsIds.indexOf(currentWeatherWarningsIdsCopy[i])
+                            console.log("*** SPLICING AT INDEX...")
+                            console.log(indexToSplice)
+                            currentWeatherWarningsIds.splice(indexToSplice, 1);
+                            // Testing 19 May
+                            console.log("*** AFTER SPLICE")
+                            console.log(currentWeatherWarningsIds)
                         }
-                        currentWeatherWarningsIds.splice(i, 1);
                     }
                 }
 
                 footerWarningTitle = newFooterWarningTitle;
                 footerWarningContentScroll = newFooterWarningContentScroll;
-                console.log('#### CHECKING TO SEE IF SCROLLER SHOULD START ##########################')
-                console.log(footerWarningTitle)
-                console.log(footerWarningContentScroll)
-                console.log('######################################### ... end ... ##################')
                 if (footerWarningTitle != '' && footerWarningContentScroll != '') {
                     document.getElementById('footer-title').innerHTML = footerWarningTitle;
                     document.getElementById('footer-content-scroll').innerHTML = footerWarningContentScroll;
