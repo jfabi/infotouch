@@ -26,7 +26,7 @@ var rotationUpdate = function rotationUpdate() {
     weekdayPredict = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() <= 6
     sundayPredict = currentTime.getHours() >= 9 && currentTime.getHours() < 24 && (currentTime.getDay() == 0 || currentTime.getDay() == 7)
     weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 9 && currentTime.getDay() > 0 && currentTime.getDay() < 6
-    displayAlertsMinor = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() < 6
+    displayAlertsMinor = currentTime.getHours() >= 5 && currentTime.getHours() < 20 && currentTime.getDay() > 0 && currentTime.getDay() < 6
 
     overnightMode = currentTime.getHours() >= 1 && currentTime.getHours() <= 6
     if (overnightMode == false) {
