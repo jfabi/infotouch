@@ -167,6 +167,9 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
             $('#main').append('<div id="message-status"><span id="message-status-body"></span><span id="message-status-ago"></span></div>');
             document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
         } else {
+            if (document.getElementById('message-status-body') == null) {
+                lastDisplayText == '';
+            }
             document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
         }
     }
