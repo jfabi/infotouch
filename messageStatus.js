@@ -164,11 +164,18 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
         htmlForMessageAgo += '</h4>';
 
         if (document.getElementById('message-status') == null) {
+            console.log('message-status IS NULL')
             $('#main').append('<div id="message-status"><span id="message-status-body"></span><span id="message-status-ago"></span></div>');
             document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
         } else {
             if (document.getElementById('message-status-body') == null) {
-                lastDisplayText == '';
+                console.log('message-status-body IS NULL')
+                lastDisplayText = '';
+            } else if (document.getElementById('message-status-body').innerText == '') {
+                console.log('message-status-body IS EMPTY')
+                lastDisplayText = '';
+            } else {
+                console.log('current message displayed is FINE')
             }
             document.getElementById('message-status-ago').innerHTML = htmlForMessageAgo;
         }
