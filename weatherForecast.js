@@ -17,7 +17,29 @@ var currentWeather = '';
 var currentWeatherIcon = 'wi-train';
         
 var weatherForecastUpdate = function nextWeatherForecastUpdate() {
+    // Fetch current conditions
+    jQuery(document).ready(function($) {
+        $.ajax({
+            url : "https://api.weather.gov/stations/" + weatherStation + "/observations/latest",
+            dataType : "json",
+            success : function(parsed_json) {
 
+                var currentWeatherOutput = parsed_json['properties'];
+                var htmlForForecasts = '';
+
+                if (currentWeatherOutput['temperature']['unitCode'] == 'unit:degF') {
+                    currentTempF = Math.round(currentWeatherOutput['temperature']['value']);
+                    currentTempC = toCelcius(currentWeatherOutput['temperature']['value']);
+                } else if (currentWeatherOutput['temperature']['unitCode'] == 'unit:degC') {
+                    currentTempC = Math.round(currentWeatherOutput['temperature']['value']);
+                    currentTempF = toFahrenheit(currentWeatherOutput['temperature']['value']);
+                }
+                currentWeather = currentWeatherOutput['textDescription'];
+            }
+        });
+    });
+
+    // Fetch upcoming forecast
     jQuery(document).ready(function($) {
         $.ajax({
             url : "https://api.weather.gov/points/" + weatherPoint + "/forecast/hourly",
@@ -49,10 +71,7 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
 
 
                     if (i == 0) {
-                        currentTempF = fTemp;
-                        currentTempC = cTemp;
                         currentIsDaytime = isDaytimeDisplay;
-                        currentWeather = description;
                         currentWeatherIcon = weatherIconClass(currentWeather,currentIsDaytime);
                     }
 

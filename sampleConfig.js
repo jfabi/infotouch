@@ -9,6 +9,7 @@ var minimumWalkingMinutes = {
 var listOfStops = '75,97';
 var listOfRoutes = '1,701';
 var weatherPoint = '42.35824,-71.09281';
+var weatherStation = 'KBOS';
 var lifxToken = '1234567890';
 var twitterKey = '1234567890';
 var twitterSecret = '1234567890'

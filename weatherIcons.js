@@ -12,6 +12,8 @@ var weatherIconClass = function weatherIconClass(casedCondition,isDaytime) {
 		iconClass = 'cloudy';
 	} else if (condition.includes('sunny')) {
 		iconClass = 'day-sunny';
+	} else if (condition.includes('clear') && isDaytime == 'day') {
+		iconClass = 'day-sunny';
 	} else if (condition.includes('clear')) {
 		iconClass = 'night-clear';
 	} else if (condition.includes('flood')) {
