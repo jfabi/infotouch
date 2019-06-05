@@ -70,6 +70,35 @@ var rotationUpdate = function rotationUpdate() {
 		}
 	}
 
+    var sharedMobilityStatusDiv = document.getElementById('shared-mobility-status');
+	if (sharedMobilityStatusDiv != null) {
+		if (sharedMobilityStatusDiv.children.length > 0) {
+			if ((weekdayPredict || sundayPredict) && overnightMode == false) {
+				slickIndex = $('#shared-mobility-status').attr('data-slick-index');
+				console.log("Mode A - shared")
+				console.log(sharedMobilityStatusDiv)
+				console.log(slickIndex)
+				sharedMobilityStatusDiv.style.display = 'inline';
+				if (slickIndex == null) {
+					$('.rotation-group').slick('slickAdd', '#shared-mobility-status');
+				}
+			} else {
+				slickIndex = $('#shared-mobility-status').attr('data-slick-index');
+				console.log("Mode B - shared")
+				console.log(sharedMobilityStatusDiv)
+				console.log(slickIndex)
+				sharedMobilityStatusDiv.style.display = 'none';
+				if (slickIndex != null) {
+					console.log("")
+					console.log(" !!!!! REMOVING SHARED STATUS")
+					console.log(slickIndex)
+					console.log("")
+					$('.rotation-group').slick('slickRemove', slickIndex);
+				}
+			}
+		}
+	}
+
     var messageStatusDiv = document.getElementById('message-status');
     if (messageStatusDiv != null) {
     	if (messageStatusDiv.children.length > 0) {

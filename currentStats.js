@@ -19,7 +19,7 @@ var currentStatsUpdate = function currentStatsUpdate() {
 
     var currentTime = new Date();
     htmlForCurrentStats = '<table id="header-container" class="normal-colors"><tr>'
-    htmlForCurrentStats += '<td style="width: 27%; text-align: left;" class="app-title"><b>infoTouch</b> v0.8.05 by jfabi</td>'
+    htmlForCurrentStats += '<td style="width: 27%; text-align: left;" class="app-title"><b>infoTouch</b> v0.8.07 by jfabi</td>'
 
     if ((currentTime.getSeconds() % 10 < 5 && overnightMode == false) || statsMode == 'weather-forecast-open' || statsMode == 'light-control-open') {
         // Show clock time, day of week
