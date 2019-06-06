@@ -42,7 +42,7 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
     // Fetch upcoming forecast
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://api.weather.gov/points/" + weatherPoint + "/forecast/hourly",
+            url : "https://api.weather.gov/points/" + weatherPoint['latitude'] + "," + weatherPoint['longitude'] + "/forecast/hourly",
             dataType : "json",
             success : function(parsed_json) {
 

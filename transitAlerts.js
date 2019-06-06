@@ -6,12 +6,12 @@ var staleAlertThreshold = 800000000;
 var currentTransitAlertsIds = [];
 
 var stopsFilter = '';
-if (listOfStops != '') {
-    stopsFilter = '&filter[stop]=' + listOfStops;
+if (transitStops != '') {
+    stopsFilter = '&filter[stop]=' + transitStops;
 }
 var routesFilter = '';
-if (listOfRoutes != '') {
-    routesFilter = '&filter[route]=' + listOfRoutes;
+if (transitRoutes != '') {
+    routesFilter = '&filter[route]=' + transitRoutes;
 }
 
 var causeDisplayLookup = {

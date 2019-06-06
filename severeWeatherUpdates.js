@@ -10,7 +10,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
 
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://api.weather.gov/alerts?active=1&point=" + weatherPoint,
+            url : "https://api.weather.gov/alerts?active=1&point=" + weatherPoint['latitude'] + "," + weatherPoint['longitude'],
             dataType : "json",
             success : function(parsed_json) {
                 var allAlerts = parsed_json['features'];

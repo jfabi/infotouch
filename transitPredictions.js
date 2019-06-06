@@ -3,12 +3,12 @@
 //  MBTA service predictions (updates once every 30 seconds)
 
 var stopsFilter = '';
-if (listOfStops != '') {
-    stopsFilter = '&filter[stop]=' + listOfStops;
+if (transitStops != '') {
+    stopsFilter = '&filter[stop]=' + transitStops;
 }
 var routesFilter = '';
-if (listOfRoutes != '') {
-    routesFilter = '&filter[route]=' + listOfRoutes;
+if (transitRoutes != '') {
+    routesFilter = '&filter[route]=' + transitRoutes;
 }
         
 var transitPredictionsUpdate = function nextServiceUpdate() {
@@ -64,7 +64,7 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         }
                         var departure = new Date(allPredictions[i]['attributes']['departure_time']);
                         var rawCountdown = (departure.getTime() - Date.now()) / 1000;
-                        if (minimumWalkingMinutes[stopId] > Math.round(rawCountdown/60)) {
+                        if (transitStopsMinimumWalkMinutes[stopId] > Math.round(rawCountdown/60)) {
                             continue;
                         }
                         var countdown = 'Err';
