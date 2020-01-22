@@ -120,6 +120,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     var severity = allAlerts[i]['attributes']['severity'];
                     var severityDisplay = severityDisplayLookup[severity];
                     var severityCategory = severityCategoryLookup[severity];
+                    var informedEntity = allAlerts[i]['attributes']['informed_entity'];
                     newAlert = {};
                     newAlert['alertId'] = alertId;
                     newAlert['routeId'] = routeId;
@@ -131,6 +132,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     newAlert['severity'] = severity;
                     newAlert['severityDisplay'] = severityDisplay;
                     newAlert['severityCategory'] = severityCategory;
+                    newAlert['informedEntity'] = informedEntity;
                     if (allAlerts[i]['attributes']['lifecycle'] != 'NEW' && allAlerts[i]['attributes']['lifecycle'] != 'ONGOING') {
                         continue;
                     }
@@ -171,7 +173,9 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         routeDisplay = infoAboutRoutes[routeId]['longName'];
                     }
                     var textColor = infoAboutRoutes[routeId]['textColor'];
+                    infoAboutAlerts[i]['textColor'] = textColor;
                     var backgroundColor = infoAboutRoutes[routeId]['backgroundColor'];
+                    infoAboutAlerts[i]['backgroundColor'] = backgroundColor;
                     var effectDisplay = infoAboutAlerts[i]['effectDisplay'];
                     if (!effectDisplay) {
                         effectDisplay = '';
@@ -214,11 +218,15 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     htmlForAlert += routeDisplay + '&nbsp;</span><br>';
                     htmlForAlert += '<span class="transit-alert-title">' + effectDisplay + ' ';
                     htmlForAlert += severityDisplay + ' ' + causeDisplay + '</span>'
-                    htmlForAlert += '</h2>' + description + '</div>';
+                    htmlForAlert += '</h2>' + description;
 
                     parsedAlert = {};
                     parsedAlert['alertId'] = infoAboutAlerts[i]['alertId'];
                     parsedAlert['severityCategory'] = infoAboutAlerts[i]['severityCategory'];
+                    parsedAlert['effect'] = infoAboutAlerts[i]['effect'];
+                    parsedAlert['informedEntity'] = infoAboutAlerts[i]['informedEntity'];
+                    parsedAlert['textColor'] = infoAboutAlerts[i]['textColor'];
+                    parsedAlert['backgroundColor'] = infoAboutAlerts[i]['backgroundColor'];
                     parsedAlert['html'] = htmlForAlert;
                     parsedAlerts.push(parsedAlert);
                 }
@@ -233,6 +241,14 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         console.log("((( ABOVE ALERT NEW - CREATING NEW DIV")
                         console.log("((( - - - - - - - - - - -")
                         $('#main').append('<div id=' + divId + '></div>');
+
+                        // Create alert diagram if applicable
+                        console.log(parsedAlerts[i])
+                        console.log(parsedAlerts[i]['effect'])
+                        generateAlertDiagram(parsedAlerts[i])
+
+                        parsedAlerts[i]['html'] =  parsedAlerts[i]['html'] + '</div>';
+
                         currentTransitAlertsIds.push(parsedAlerts[i]['alertId']);
                         document.getElementById(divId).innerHTML = parsedAlerts[i]['html'];
                         $('.rotation-group').slick('slickAdd', '#' + divId);
@@ -320,3 +336,267 @@ var transitAlertsUpdate = function nextServiceUpdate() {
 
 transitAlertsUpdate();
 setInterval(transitAlertsUpdate,120000);
+
+var generateAlertDiagram = function generateAlertDiagram(alert) {
+    if (alert['effect'] == 'SHUTTLE') {
+
+        var routeId = alert['informedEntity'][0]['route'];
+        console.log(routeId)
+        var apiUrl = 'https://api-v3.mbta.com/stops?filter[route]=' + routeId + '&filter[direction_id]=0';
+        
+        jQuery(document).ready(function($) {
+            $.ajax({
+                url : apiUrl,
+                dataType : "json",
+                success : function(parsed_json) {
+                    var stationsOnRoute = parsed_json['data'];
+                    console.log(stationsOnRoute)
+                    var stationsOnRouteAlert = [];
+                    var haveStartedShuttle = false;
+
+                    for (i = 0; i < stationsOnRoute.length; i++) {
+                        var stationStatus = 'normal';
+                        for (j = 0; j < alert['informedEntity'].length; j++) {
+                            if (alert['informedEntity'][j]['stop'] == stationsOnRoute[i]['id']) {
+                                // We found a station impacted by the alert
+                                if (i == 0) {
+                                    stationStatus = 'shuttle start + route edge';
+                                    haveStartedShuttle = true;
+                                } else if (i == stationsOnRoute.length - 1) {
+                                    stationStatus = 'shuttle end + route edge';
+                                } else if (alert['informedEntity'][j]['activities'].length == 2 && haveStartedShuttle == false) {
+                                    stationStatus = 'shuttle start';
+                                    haveStartedShuttle = true;
+                                } else if (alert['informedEntity'][j]['activities'].length == 2) {
+                                    stationStatus = 'shuttle end';
+                                } else {
+                                    stationStatus = 'shuttle';
+                                }
+                                break;
+                            } else if (i == 0 || i == stationsOnRoute.length - 1) {
+                                stationStatus = 'route edge';
+                            }
+                        }
+                        stationsOnRouteAlert.push({
+                            stopId: stationsOnRoute[i]['id'],
+                            stationName: stationsOnRoute[i]['attributes']['name'],
+                            stationStatus: stationStatus
+                        })
+                    }
+
+                    // Remove stations which have normal service and aren't on edge of route
+                    var filteredStationsOnRouteAlert = stationsOnRouteAlert.filter(function(e) {
+                        return e['stationStatus'] !== 'normal'
+                    })
+                    console.log('TAKE 1 !!!')
+                    console.log(filteredStationsOnRouteAlert)
+                    var onlyShuttle = filteredStationsOnRouteAlert.filter(function(e) {
+                        return e['stationStatus'] == 'shuttle'
+                    })
+                    console.log('TAKE 2 !!!')
+                    console.log(onlyShuttle)
+                    var finalAlertStations = [];
+                    if (onlyShuttle.length > 3) {
+                        var alertStationFinal = onlyShuttle[onlyShuttle.length - 1]['stopId'];
+                        var shuttleCounter = 0;
+                        for (i = 0; i < filteredStationsOnRouteAlert.length; i++) {
+                            if (filteredStationsOnRouteAlert[i]['stationStatus'] == 'shuttle') {
+                                if (shuttleCounter < 1) {
+                                    finalAlertStations.push(filteredStationsOnRouteAlert[i]);
+                                    shuttleCounter = shuttleCounter + 1;
+                                } else if (filteredStationsOnRouteAlert[i]['stopId'] == alertStationFinal) {
+                                    finalAlertStations.push(filteredStationsOnRouteAlert[i]);
+                                } else if (shuttleCounter == 1) {
+                                    finalAlertStations.push({
+                                        stopId: null,
+                                        stationName: null,
+                                        stationStatus: '...'
+                                    })
+                                    shuttleCounter = shuttleCounter + 1;
+                                }
+                            } else {
+                                finalAlertStations.push(filteredStationsOnRouteAlert[i]);
+                            }
+                        }
+                    } else {
+                        finalAlertStations = filteredStationsOnRouteAlert;
+                    }
+
+                    console.log('@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(')
+                    for (i = 0; i < filteredStationsOnRouteAlert.length; i++) {
+                        console.log(filteredStationsOnRouteAlert[i]['stationName'] + ' -- ' + filteredStationsOnRouteAlert[i]['stationStatus'])
+                    }
+                    console.log('@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(')
+                    console.log('')
+                    console.log('')
+                    
+                    console.log('@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(')
+                    for (i = 0; i < finalAlertStations.length; i++) {
+                        console.log(finalAlertStations[i]['stationName'] + ' -- ' + finalAlertStations[i]['stationStatus'])
+                    }
+                    console.log('@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(@(')
+                    console.log('')
+                    console.log('')
+
+                    // DRAW OUR FINAL SVG DIAGRAM AND STUFF HERE USING finalAlertStations
+                    var svgNS = 'http://www.w3.org/2000/svg';
+
+                    var currentX = 25;
+                    for (i = 0; i < finalAlertStations.length; i++) {
+                        if (i == 0 && finalAlertStations[i]['stationStatus'] == 'route edge') {
+                            var shape2 = document.createElementNS(svgNS, 'polygon');
+                            shape2.setAttributeNS(null, 'points', (currentX + 22) + ' 204, ' + (currentX + 22) + ' 246, '+ currentX +' 225');
+                            shape2.setAttributeNS(null, 'fill', '#' + alert['backgroundColor']);
+
+                            currentX = currentX + 22;
+
+                            var shape0 = document.createElementNS(svgNS, 'rect');
+                            shape0.setAttributeNS(null, 'x', currentX);
+                            shape0.setAttributeNS(null, 'y', 204);
+                            shape0.setAttributeNS(null, 'width', 300);
+                            shape0.setAttributeNS(null, 'height', 42);
+                            shape0.setAttributeNS(null, 'fill', '#' + alert['backgroundColor']);
+
+                            var shape = document.createElementNS(svgNS, 'text');
+                            shape.setAttributeNS(null, 'x', currentX + 10);
+                            shape.setAttributeNS(null, 'y', 233);
+                            shape.setAttributeNS(null, 'fill', '#' + alert['textColor']);
+                            shape.setAttributeNS(null, 'font-weight', 'bold');
+                            var textNode = document.createTextNode(finalAlertStations[i]['stationName']);
+                            shape.appendChild(textNode);
+                            console.log('########## MAKING TEXT NODE')
+
+                            console.log('########## s width = ' + shape.getComputedTextLength())
+                            // console.log('########## tN width = ' + textNode.getComputedTextLength())
+
+                            currentX = currentX + 300;
+
+                            var shape3 = document.createElementNS(svgNS, 'rect');
+                            shape3.setAttributeNS(null, 'x', currentX + 28);
+                            shape3.setAttributeNS(null, 'y', 215);
+                            shape3.setAttributeNS(null, 'width', 18);
+                            shape3.setAttributeNS(null, 'height', 20);
+                            shape3.setAttributeNS(null, 'fill', 'black');
+
+                            document.getElementById('mySVG').appendChild(shape3);
+                            document.getElementById('mySVG').appendChild(shape0);
+                            document.getElementById('mySVG').appendChild(shape);
+                            document.getElementById('mySVG').appendChild(shape2);
+                        } else if (finalAlertStations[i]['stationStatus'] == 'route edge') {
+                            currentX = currentX - 70;
+
+                            var shape0 = document.createElementNS(svgNS, 'rect');
+                            shape0.setAttributeNS(null, 'x', currentX);
+                            shape0.setAttributeNS(null, 'y', 204);
+                            shape0.setAttributeNS(null, 'width', 300);
+                            shape0.setAttributeNS(null, 'height', 42);
+                            shape0.setAttributeNS(null, 'fill', '#' + alert['backgroundColor']);
+
+                            var shape = document.createElementNS(svgNS, 'text');
+                            shape.setAttributeNS(null, 'x', currentX + 20);
+                            shape.setAttributeNS(null, 'y', 233);
+                            shape.setAttributeNS(null, 'fill', '#' + alert['textColor']);
+                            shape.setAttributeNS(null, 'font-weight', 'bold');
+                            var textNode = document.createTextNode(finalAlertStations[i]['stationName']);
+                            shape.appendChild(textNode);
+                            console.log('########## MAKING TEXT NODE')
+
+                            console.log('########## s width = ' + shape.getComputedTextLength())
+                            // console.log('########## tN width = ' + textNode.getComputedTextLength())
+
+                            currentX = currentX + 300;
+
+                            var shape2 = document.createElementNS(svgNS, 'polygon');
+                            shape2.setAttributeNS(null, 'points', currentX + ' 207, ' + currentX + ' 242, '+ (currentX + 22) +' 225');
+                            shape2.setAttributeNS(null, 'fill', '#' + alert['backgroundColor']);
+
+                            document.getElementById('mySVG').appendChild(shape0);
+                            document.getElementById('mySVG').appendChild(shape);
+                            document.getElementById('mySVG').appendChild(shape2);
+
+                            currentX = currentX + 25;
+                        } else if (finalAlertStations[i]['stationStatus'].includes('shuttle')) {
+                            var shape = document.createElementNS(svgNS, 'text');
+                            shape.setAttributeNS(null, 'x', currentX + 25);
+                            shape.setAttributeNS(null, 'y', 200);
+                            shape.setAttributeNS(null, 'fill', 'black');
+                            shape.setAttributeNS(null, 'transform', 'rotate(-45,' + currentX + ',200)');
+                            shape.setAttributeNS(null, 'font-weight', 'bold');
+                            var textNode = document.createTextNode(finalAlertStations[i]['stationName']);
+                            shape.appendChild(textNode);
+
+                            var shape1 = document.createElementNS(svgNS, 'circle');
+                            shape1.setAttributeNS(null, 'cx', currentX);
+                            shape1.setAttributeNS(null, 'cy', 225);
+                            shape1.setAttributeNS(null, 'r', 18);
+                            if (finalAlertStations[i]['stationStatus'] == 'shuttle start' || finalAlertStations[i]['stationStatus'] == 'shuttle end') {
+                                shape1.setAttributeNS(null, 'stroke', '#' + alert['backgroundColor']);
+                            } else {
+                                shape1.setAttributeNS(null, 'stroke', 'black');
+                            }
+                            shape1.setAttributeNS(null, 'stroke-width', 6);
+                            shape1.setAttributeNS(null, 'fill', 'white');
+
+                            if (!finalAlertStations[i]['stationStatus'].includes('shuttle end')) {
+                                var shape0 = document.createElementNS(svgNS, 'rect');
+                                shape0.setAttributeNS(null, 'x', currentX + 28);
+                                shape0.setAttributeNS(null, 'y', 215);
+                                shape0.setAttributeNS(null, 'width', 18);
+                                shape0.setAttributeNS(null, 'height', 20);
+                                shape0.setAttributeNS(null, 'fill', 'black');
+
+                                document.getElementById('mySVG').appendChild(shape0);
+                            }
+
+                            document.getElementById('mySVG').appendChild(shape);
+                            document.getElementById('mySVG').appendChild(shape1);
+
+                            currentX = currentX + 75;
+                        } else if (finalAlertStations[i]['stationStatus'] == '...') {
+
+                            var shape1 = document.createElementNS(svgNS, 'circle');
+                            shape1.setAttributeNS(null, 'cx', currentX + 10);
+                            shape1.setAttributeNS(null, 'cy', 225);
+                            shape1.setAttributeNS(null, 'r', 3);
+                            shape1.setAttributeNS(null, 'fill', 'black');
+
+                            var shape2 = document.createElementNS(svgNS, 'circle');
+                            shape2.setAttributeNS(null, 'cx', currentX);
+                            shape2.setAttributeNS(null, 'cy', 225);
+                            shape2.setAttributeNS(null, 'r', 3);
+                            shape2.setAttributeNS(null, 'fill', 'black');
+
+                            var shape3 = document.createElementNS(svgNS, 'circle');
+                            shape3.setAttributeNS(null, 'cx', currentX - 10);
+                            shape3.setAttributeNS(null, 'cy', 225);
+                            shape3.setAttributeNS(null, 'r', 3);
+                            shape3.setAttributeNS(null, 'fill', 'black');
+
+                            var shape0 = document.createElementNS(svgNS, 'rect');
+                            shape0.setAttributeNS(null, 'x', currentX + 28);
+                            shape0.setAttributeNS(null, 'y', 215);
+                            shape0.setAttributeNS(null, 'width', 18);
+                            shape0.setAttributeNS(null, 'height', 20);
+                            shape0.setAttributeNS(null, 'fill', 'black');
+
+                            document.getElementById('mySVG').appendChild(shape1);
+                            document.getElementById('mySVG').appendChild(shape2);
+                            document.getElementById('mySVG').appendChild(shape3);
+                            document.getElementById('mySVG').appendChild(shape0);
+
+                            currentX = currentX + 75;
+                        }
+                    }
+
+                }
+            });
+        });
+        
+
+    }
+};
+
+var mbtaApiCall = function mbtaApiCall(apiUrl) {
+    var parsed_json = '';
+    
+};
