@@ -28,12 +28,15 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                         continue;
                     }
                     daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-                    expires = new Date(alert['ends']);
+                    expires = new Date(alert['expires']);
                     expiresDay = daysOfWeek[expires.getDay()];
                     expiresHours = expires.getHours().toString().length == 1 ? '0' + expires.getHours() : expires.getHours()
                     expiresMins = expires.getMinutes().toString().length == 1 ? '0' + expires.getMinutes() : expires.getMinutes()
                     alertName = alert['event'];
                     description = alert['instruction'];
+                    if (description == null) {
+                        description = alert['description'];
+                    }
                     alertBackground = '';
                     alertTypeColors = '';
 
