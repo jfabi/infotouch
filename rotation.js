@@ -25,7 +25,7 @@ var rotationUpdate = function rotationUpdate() {
     // FUTURE: Replace with config.js variables
     weekdayPredict = currentTime.getHours() >= 0 && currentTime.getHours() < 24 && currentTime.getDay() > 0 && currentTime.getDay() <= 6
     sundayPredict = currentTime.getHours() >= 9 && currentTime.getHours() < 24 && (currentTime.getDay() == 0 || currentTime.getDay() == 7)
-    weekdayHideTwitter = currentTime.getHours() >= 8 && currentTime.getHours() < 9 && currentTime.getDay() > 0 && currentTime.getDay() < 6
+    weekdayHideMessage = currentTime.getHours() >= 8 && currentTime.getHours() < 9 && currentTime.getDay() > 0 && currentTime.getDay() < 6
     displayAlertsMinor = currentTime.getHours() >= 5 && currentTime.getHours() < 20 && currentTime.getDay() > 0 && currentTime.getDay() < 6
 
     overnightMode = currentTime.getHours() >= 1 && currentTime.getHours() <= 6
@@ -102,7 +102,7 @@ var rotationUpdate = function rotationUpdate() {
     var messageStatusDiv = document.getElementById('message-status');
     if (messageStatusDiv != null) {
     	if (messageStatusDiv.children.length > 0) {
-		    if (!weekdayHideTwitter && currentSevereImmediate == false && overnightMode == false) {
+		    if (!weekdayHideMessage && currentSevereImmediate == false && overnightMode == false) {
 		    	slickIndex = $('#message-status').attr('data-slick-index');
 		    	console.log("Mode T")
 		    	console.log(slickIndex)
@@ -118,7 +118,7 @@ var rotationUpdate = function rotationUpdate() {
 		    	lastDisplayText = '';
 		    	if (slickIndex != null) {
 		    		console.log("")
-		    		console.log(" !!!!! REMOVING TWITTER")
+		    		console.log(" !!!!! REMOVING MESSAGE")
 		    		console.log(slickIndex)
 		    		console.log("")
 		        	$('.rotation-group').slick('slickRemove', slickIndex);

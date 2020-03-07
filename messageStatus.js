@@ -1,15 +1,11 @@
 // Written by Joshua Fabian, jfabi@alum.mit.edu
 
-//  gets latest Twitter tweets
+//  gets latest messages via Google Drive document
 
 var lastDisplayText = '';
 var lastDisplayId = '';
 var lastAnnounceText = '';
 var lastAnnounceId = '';
-
-var codebird = new Codebird;
-codebird.setConsumerKey(twitterConsumerKey, twitterConsumerSecret);
-codebird.setToken(twitterAccessToken, twitterAccessSecret);
 
 var backgroundColorLookup = {
     R: 'red', r: 'red',
@@ -33,51 +29,48 @@ var textColorLookup = {
     W: 'black', w: 'black'
 };
 
-var twitterParams = 'screen_name=' + encodeURIComponent('jfabi_info') + '&count=5';
-        
-var twitterGetLatestStatuses = function twitterGetLatestStatuses() {
-    console.log('NOW ABOUT TO CALL TWITTER !!!')
-    codebird.__call(
-        'statuses_userTimeline',
-        twitterParams,
-        function (reply, rate, err) {
-            var mostRecentDisplayText = '';
-            var mostRecentDisplayId = '';
-            var mostRecentAnnounceText = '';
-            var mostRecentAnnounceId = '';
+var messageGetLatestStatuses = function messageGetLatestStatuses() {
+    googleURL = "https://www.googleapis.com/drive/v3/files/" + googleDocumentID + "/export?mimeType=text/plain&key=" + googleAPIKey;
+    jQuery(document).ready(function($) {
+        $.ajax({
+            url : googleURL,
+            success : function(reply) {
+                var mostRecentDisplayText = '';
+                var mostRecentDisplayId = '';
+                var mostRecentAnnounceText = '';
+                var mostRecentAnnounceId = '';
 
-            if (reply != null) {
-                console.log('REPLY WAS OKAY :) !!!!')
-                console.log(reply)
-                for (i = reply.length - 1; i >= 0; i--) {
-                    if (reply[i]['text'].length > 2) {
-                        var id = reply[i]['text'].substr(0,1);
-                        var text = reply[i]['text'].substr(2);
-                        var announceIdSet = 'xXyYzZ';
-                        var secondsSinceTweet = (Date.now() - (new Date(reply[i]['created_at'])).getTime()) / 1000;
+                if (reply != null) {
+                    console.log('REPLY WAS OKAY :) !!!!')
+                    console.log(reply)
+                    for (i = reply.length - 1; i >= 0; i--) {
+                        if (reply.length > 2) {
+                            var id = reply.substr(0,1);
+                            var text = reply.substr(2);
+                            var announceIdSet = 'xXyYzZ';
 
-                        if (announceIdSet.includes(id)) {
-                            mostRecentAnnounceId = id;
-                            mostRecentAnnounceText = text;
-                        } else {
-                            mostRecentDisplayId = id;
-                            mostRecentDisplayText = text;
+                            if (announceIdSet.includes(id)) {
+                                mostRecentAnnounceId = id;
+                                mostRecentAnnounceText = text;
+                            } else {
+                                mostRecentDisplayId = id;
+                                mostRecentDisplayText = text;
+                            }
                         }
                     }
+                    console.log(mostRecentDisplayId)
+                    console.log(mostRecentDisplayText)
+                    console.log('SENDING OUT TO MessageStatusUpdate')
+                    messageStatusUpdate(mostRecentDisplayId,mostRecentDisplayText,mostRecentAnnounceId,mostRecentAnnounceText,null);
+                } else {
+                    console.log('REPLY WAS NULL !!! ')
                 }
-                console.log(mostRecentDisplayId)
-                console.log(mostRecentDisplayText)
-                console.log(secondsSinceTweet)
-                console.log('SENDING OUT TO twitterStatusUpdate')
-                twitterStatusUpdate(mostRecentDisplayId,mostRecentDisplayText,mostRecentAnnounceId,mostRecentAnnounceText,secondsSinceTweet);
-            } else {
-                console.log('REPLY WAS NULL !!! ')
             }
-        }
-    );
+        });
+    });
 };
 
-var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,announceId,announceText,secondsSinceTweet) {
+var messageStatusUpdate = function messageStatusUpdate(displayId,displayText,announceId,announceText,secondsSinceTweet) {
     timeSinceTweetText = '';
 
     if (secondsSinceTweet == '' || displayText == '') {
@@ -104,7 +97,7 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
     console.log(displayId)
     console.log(lastDisplayText)
     console.log(displayText)
-    if (overnightMode || weekdayHideTwitter) {
+    if (overnightMode || weekdayHideMessage) {
         console.log('WAIT...it is LATE OVERNIGHT / TWEET BLOCK PERIOD, DO NOT DO ANYTHING FURTHER')
         return;
     } else if ((lastDisplayId != displayId || lastDisplayText != displayText) && displayText != '') {
@@ -192,5 +185,5 @@ var twitterStatusUpdate = function twitterStatusUpdate(displayId,displayText,ann
     }
 };
 
-twitterGetLatestStatuses();
-setInterval(twitterGetLatestStatuses,30000);
+messageGetLatestStatuses();
+setInterval(messageGetLatestStatuses,120000);

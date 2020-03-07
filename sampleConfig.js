@@ -20,5 +20,5 @@ var weatherPoint = {
 };
 var weatherStation = 'KBOS';
 var lifxToken = '1234567890';
-var twitterKey = '1234567890';
-var twitterSecret = '1234567890'
+var googleDocumentID = '1234567890';
+var googleAPIKey = '1234567890'
