@@ -15,7 +15,7 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
 
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://api-v3.mbta.com/predictions?include=trip,route&sort=departure_time" + stopsFilter + routesFilter,
+            url : "https://api-v3.mbta.com/predictions?include=trip,route,vehicle&sort=departure_time" + stopsFilter + routesFilter,
             dataType : "json",
             success : function(parsed_json) {
 
@@ -24,6 +24,7 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                 var predictions = [];
                 var infoAboutTrips = {};
                 var infoAboutRoutes = {};
+                var infoAboutVehicles = {};
                 var htmlForPredictions = '';
                 var htmlForAlerts = '';
                 var displayablePredictions = {};
@@ -48,6 +49,11 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                             infoAboutRoutes[routeId]['backgroundColor'] = backgroundColor;
                             infoAboutRoutes[routeId]['longName'] = longName;
                             infoAboutRoutes[routeId]['shortName'] = shortName;
+                        } else if (allIncluded[i]['type'] == 'vehicle') {
+                            var vehicleId = allIncluded[i]['id'];
+                            var occupancyStatus = allIncluded[i]['attributes']['occupancy_status'];
+                            infoAboutVehicles[vehicleId] = {};
+                            infoAboutVehicles[vehicleId]['occupancyStatus'] = occupancyStatus;
                         }
                     }
 
@@ -62,6 +68,23 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         if (headsign == 'University Park') {
                             continue;
                         }
+                        var crowding = '';
+                        var crowdingImage = '';
+                        if (allPredictions[i]['relationships']['vehicle']['data'] != null) {
+                            var vehicleId = allPredictions[i]['relationships']['vehicle']['data']['id'];
+                            crowding = infoAboutVehicles[vehicleId]['occupancyStatus'];
+                            if (crowding != null) {
+                                var crowdingFileName = 'crowding-none.png';
+                                if (crowding == 'MANY_SEATS_AVAILABLE') {
+                                    crowdingFileName = 'crowding-low.png';
+                                } else if (crowding == 'FEW_SEATS_AVAILABLE') {
+                                    crowdingFileName = 'crowding-medium.png';
+                                } else if (crowding == 'FULL') {
+                                    crowdingFileName = 'crowding-high.png';
+                                }
+                                crowdingImage = '<img src="icons/' + crowdingFileName + '" width="36px" style="display:inline; padding-top: 5px;">';
+                            }
+                        }
                         var departure = new Date(allPredictions[i]['attributes']['departure_time']);
                         var rawCountdown = (departure.getTime() - Date.now()) / 1000;
                         if (transitStopsMinimumWalkMinutes[stopId] > Math.round(rawCountdown/60)) {
@@ -73,7 +96,7 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         } else if (rawCountdown < 30) {
                             countdown = 'ARR';
                         } else {
-                            countdown = Math.round(rawCountdown/60) + '<span class="transit-min"> min</span>';
+                            countdown = crowdingImage + ' ' + Math.round(rawCountdown/60) + '<span class="transit-min"> min</span>';
                         }
 
                         routeHeadsignKey = routeId + '-' + headsign;

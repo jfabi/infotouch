@@ -9,6 +9,16 @@ body {
 	min-height: 100%;
 }
 
+.shared-mobility-station {
+	flex: 63%;
+	font-weight: 700;
+}
+
+.shared-mobility-count {
+	flex: 25%;
+	text-align: right;
+}
+
 .slick-slide {
 	min-height: 100vh;
 }
@@ -45,13 +55,12 @@ body {
 }
 
 .transit-headsign {
-	flex: 63%;
+	flex: 48%;
 	font-weight: 700;
 }
 
 .transit-countdown {
-	/*width: 40vw;*/
-	flex: 25%;
+	flex: 40%;
 	text-align: right;
 }
 

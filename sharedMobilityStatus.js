@@ -110,8 +110,8 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
                         htmlForPredictions += '<span class="transit-route"><span class="transit-route-label" style="color: #' + textColor;
                         htmlForPredictions += '; background-color: #' + backgroundColor + '">&nbsp;';
                         htmlForPredictions += routeDisplay + '&nbsp;</span></span>&nbsp;&nbsp;';
-                        htmlForPredictions += '<span class="transit-headsign">' + displayablePredictions[key]['headsign'] + '</span>';
-                        htmlForPredictions += '<span class="transit-countdown">';
+                        htmlForPredictions += '<span class="shared-mobility-station">' + displayablePredictions[key]['headsign'] + '</span>';
+                        htmlForPredictions += '<span class="shared-mobility-count">';
                         for (i = 0; i < displayablePredictions[key]['predictions'].length; i++) {
                             if (i == 0) {
                                 htmlForPredictions += '<span class="transit-first-prediction">'
