@@ -28,7 +28,12 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                         continue;
                     }
                     daysOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-                    expires = new Date(alert['expires']);
+                    var expires = null;
+                    if (alert['ends'] != null) {
+                        expires = new Date(alert['ends']);
+                    } else {
+                        expires = new Date(alert['expires']);
+                    }
                     expiresDay = daysOfWeek[expires.getDay()];
                     expiresHours = expires.getHours().toString().length == 1 ? '0' + expires.getHours() : expires.getHours()
                     expiresMins = expires.getMinutes().toString().length == 1 ? '0' + expires.getMinutes() : expires.getMinutes()
