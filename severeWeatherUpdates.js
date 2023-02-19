@@ -62,7 +62,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     htmlForWarning += '</h2><span class="' + alertBackground + '">' + description + '</span></div>';
 
                     parsedWarning = {};
-                    parsedWarning['alertId'] = alert['id'];
+                    parsedWarning['alertId'] = hashId(alert['id']);
                     parsedWarning['severity'] = alert['severity'];
                     parsedWarning['urgency'] = alert['urgency'];
                     parsedWarning['html'] = htmlForWarning;
@@ -187,6 +187,16 @@ var severeWeatherUpdate = function nextServiceUpdate() {
     });
 
 };
+
+function hashId(unhashed) {
+    let hash = 0;
+    for (i = 0; i < unhashed.length; i++) {
+        let chr = unhashed.charCodeAt(i);
+        hash = (hash << 5) - hash + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+}
 
 severeWeatherUpdate();
 setInterval(severeWeatherUpdate,120000);

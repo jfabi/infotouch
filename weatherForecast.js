@@ -27,10 +27,10 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
                 var currentWeatherOutput = parsed_json['properties'];
                 var htmlForForecasts = '';
 
-                if (currentWeatherOutput['temperature']['unitCode'] == 'unit:degF') {
+                if (currentWeatherOutput['temperature']['unitCode'].includes('degF')) {
                     currentTempF = Math.round(currentWeatherOutput['temperature']['value']);
                     currentTempC = toCelcius(currentWeatherOutput['temperature']['value']);
-                } else if (currentWeatherOutput['temperature']['unitCode'] == 'unit:degC') {
+                } else if (currentWeatherOutput['temperature']['unitCode'].includes('degC')) {
                     currentTempC = Math.round(currentWeatherOutput['temperature']['value']);
                     currentTempF = toFahrenheit(currentWeatherOutput['temperature']['value']);
                 }
@@ -42,7 +42,7 @@ var weatherForecastUpdate = function nextWeatherForecastUpdate() {
     // Fetch upcoming forecast
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://api.weather.gov/points/" + weatherPoint['latitude'] + "," + weatherPoint['longitude'] + "/forecast/hourly",
+            url : "https://api.weather.gov/gridpoints/" + weatherOffice + "/" + weatherGridPoint['x'] + "," + weatherGridPoint['y'] + "/forecast/hourly",
             dataType : "json",
             success : function(parsed_json) {
 
