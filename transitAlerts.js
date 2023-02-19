@@ -103,6 +103,9 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                         var backgroundColor = allIncluded[i]['attributes']['color'];
                         var longName = allIncluded[i]['attributes']['long_name'];
                         var shortName = allIncluded[i]['attributes']['short_name'];
+                        if (routeId.startsWith("Green-")) {
+                            shortName = "Green Line " + shortName;
+                        }
                         infoAboutRoutes[routeId] = {};
                         infoAboutRoutes[routeId]['textColor'] = textColor;
                         infoAboutRoutes[routeId]['backgroundColor'] = backgroundColor;
