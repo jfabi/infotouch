@@ -42,11 +42,12 @@ var causeDisplayLookup = {
 };
 
 var effectDisplayLookup = {
+    SUSPENSION: 'Suspension',
     DELAY: 'Delays',
     STATION_ISSUE: 'Station issue',
     SHUTTLE: 'Bus shuttle',
     SERVICE_CHANGE: 'Service change',
-    DETOUR: 'Diversion',
+    DETOUR: 'Detour',
     TRACK_CHANGE: 'Track change',
     STOP_CLOSURE: 'Stop closure'
 };
@@ -188,7 +189,7 @@ var transitAlertsUpdate = function nextServiceUpdate() {
                     if (!description) {
                         description = '';
                     }
-                    if (effectDisplay != 'Delays' && effectDisplay != 'Bus shuttle' && effectDisplay != 'Diversion') {
+                    if (effectDisplay != 'Delays' && effectDisplay != 'Bus shuttle' && effectDisplay != 'Detour' && effectDisplay != 'Suspension') {
                         continue;
                     }
                     if (infoAboutAlerts[i]['severityCategory'] == 'severe' && displayAlertsSevere == false && displayAlertsMinor == false) {
