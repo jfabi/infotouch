@@ -8,7 +8,7 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
     // Save names of Bluebikes stations
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://gbfs.bluebikes.com/gbfs/en/station_information.json",
+            url : "https://gbfs.lyft.com/gbfs/1.1/bos/en/station_information.json",
             dataType : "json",
             success : function(parsed_json) {
                 bluebikesStations = {}
@@ -21,7 +21,7 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
                 var allPredictions = parsed_json['data']['stations'];
 
                 for (i = 0; i < allPredictions.length; i++) {
-                    stationId = allPredictions[i]['station_id'];
+                    stationId = allPredictions[i]['legacy_id'];
                     bluebikesStations[stationId] = {};
                     bluebikesStations[stationId]['stationId'] = stationId;
                     if (localBluebikesStationOverrides[stationId]) {
@@ -38,7 +38,7 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
     // Check for bicycle status at Bluebikes stations
     jQuery(document).ready(function($) {
         $.ajax({
-            url : "https://gbfs.bluebikes.com/gbfs/en/station_status.json",
+            url : "https://gbfs.lyft.com/gbfs/1.1/bos/en/station_status.json",
             dataType : "json",
             success : function(parsed_json) {
                 var localBluebikesStations = sharedMobilityStations['Bluebikes']
@@ -52,11 +52,11 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
                 var displayablePredictions = {};
 
                 for (i = 0; i < allPredictions.length; i++) {
-                    if (!localBluebikesStations.includes(allPredictions[i]['station_id'])) {
+                    if (!localBluebikesStations.includes(allPredictions[i]['legacy_id'])) {
                         continue;
                     }
 
-                    var stationKey = allPredictions[i]['station_id']
+                    var stationKey = allPredictions[i]['legacy_id']
 
                     var bikeFileName = 'bike-black.png';
                     if (overnightMode == true) {
