@@ -64,7 +64,7 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         var stopId = allPredictions[i]['relationships']['stop']['data']['id'];
                         var routeId = allPredictions[i]['relationships']['route']['data']['id'];
                         var tripId = allPredictions[i]['relationships']['trip']['data']['id'];
-                        var headsign = infoAboutTrips[tripId]['headsign'];
+                        var headsign = infoAboutTrips[tripId]['headsign'].replace("(Limited Stops)", "<small><i>(Limited)</i></small>");
                         if (headsign == 'University Park') {
                             continue;
                         }
