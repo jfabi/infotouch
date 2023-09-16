@@ -13,7 +13,7 @@ var connected = 'unknown';
 var lifxBulbGetStatus = function lifxBulbGetStatus(nextFunction) {
     jQuery(document).ready(function($) {
         $.ajax({
-            url : 'https://api.lifx.com/v1/lights/all',
+            url : 'https://api.lifx.com/v1/lights/group_id:' + lifxGroup,
             type : 'GET',
             dataType : 'json',
             headers : {'Authorization': 'Bearer ' + lifxToken},
@@ -75,7 +75,7 @@ var lifxBulbChangeSaturation = function lifxBulbChangeSaturation() {
 var lifxBulbSetState = function lifxBulbSetState() {
     jQuery(document).ready(function($) {
         $.ajax({
-            url : 'https://api.lifx.com/v1/lights/all/state',
+            url : 'https://api.lifx.com/v1/lights/group_id:' + lifxGroup + '/state',
             type : 'PUT',
             data : {
                 'power' : power,
