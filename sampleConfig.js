@@ -30,6 +30,7 @@ var weatherGridPoint = {
 };
 // For light control
 var lifxToken = '1234567890';
+var lifxGroup = '12345';
 // For message status
 var googleDocumentID = '1234567890';
 var googleAPIKey = '1234567890'
