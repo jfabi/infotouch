@@ -67,11 +67,11 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
                         ebikeFileName = 'ebike-white.png';
                     }
 
-                    var countBikes = Math.round(allPredictions[i]['num_bikes_available']) + ' <img src="icons/' + bikeFileName + '" width="36px" style="display:inline">';
-                    var countElectricBikes = Math.round(allPredictions[i]['num_ebikes_available']) + '<span class="transit-min"> <img src="icons/' + ebikeFileName + '" width="36px" style="display:inline"></span>';
+                    var countClassicBikes = Math.round(allPredictions[i]['num_bikes_available'] - allPredictions[i]['num_ebikes_available']) + ' <img src="icons/' + bikeFileName + '" width="36px" style="display:inline">';
+                    var countElectricBikes = Math.round(allPredictions[i]['num_ebikes_available']) + '<span class="transit-min"> <img src="icons/' + ebikeFileName + '" width="15px" style="display:inline"><img src="icons/' + bikeFileName + '" width="36px" style="display:inline"></span>';
                     var currentStatus = allPredictions[i]['is_renting'];
 
-                    // Show at most 2 upcoming predictions per route-headsign combination
+                    // Show at most 2 types of bike availabilities
                     if (!displayablePredictions[stationKey]) {
                         displayablePredictions[stationKey] = {};
                         displayablePredictions[stationKey]['stationId'] = stationKey;
@@ -79,17 +79,18 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
                         if (stationName.length > 23) {
                             stationName = stationName.substring(0, 23);
                         }
-                        // if ()
                         displayablePredictions[stationKey]['headsign'] = stationName;
                         displayablePredictions[stationKey]['status'] = currentStatus;
                         displayablePredictions[stationKey]['predictions'] = []
                         if (currentStatus > 0) {
-                            displayablePredictions[stationKey]['predictions'].push(countBikes);
+                            if (allPredictions[i]['num_bikes_available'] > 0 || allPredictions[i]['num_ebikes_available'] == 0) {
+                                displayablePredictions[stationKey]['predictions'].push(countClassicBikes);
+                            }
                             if (allPredictions[i]['num_ebikes_available'] > 0) {
                                 displayablePredictions[stationKey]['predictions'].push(countElectricBikes);
                             }
                         } else {
-                            statusDisplay = "No svc";
+                            statusDisplay = "Closed";
                             displayablePredictions[stationKey]['predictions'].push(statusDisplay);
                         }
                     }
@@ -113,16 +114,12 @@ var sharedMobilityStatusUpdate = function nextServiceUpdate() {
                         htmlForPredictions += '<span class="shared-mobility-station">' + displayablePredictions[key]['headsign'] + '</span>';
                         htmlForPredictions += '<span class="shared-mobility-count">';
                         for (i = 0; i < displayablePredictions[key]['predictions'].length; i++) {
-                            if (i == 0) {
-                                htmlForPredictions += '<span class="transit-first-prediction">'
-                                htmlForPredictions += displayablePredictions[key]['predictions'][i];
-                                htmlForPredictions += '</span>'
-                            } else {
-                                htmlForPredictions += displayablePredictions[key]['predictions'][i];
-                            }
+                            htmlForPredictions += '<span class="transit-first-prediction">'
+                            htmlForPredictions += displayablePredictions[key]['predictions'][i];
+                            htmlForPredictions += '</span>'
                             if (i + 1 < displayablePredictions[key]['predictions'].length) {
                                 // Separate out each predictions
-                                htmlForPredictions += '  ';
+                                htmlForPredictions += '&nbsp;&nbsp;';
                             }
                         }
                         htmlForPredictions += '</span>&nbsp';
