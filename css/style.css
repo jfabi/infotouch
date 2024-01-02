@@ -10,12 +10,12 @@ body {
 }
 
 .shared-mobility-station {
-	flex: 63%;
+	flex: 54%;
 	font-weight: 700;
 }
 
 .shared-mobility-count {
-	flex: 25%;
+	flex: 34%;
 	text-align: right;
 }
 
