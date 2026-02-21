@@ -8,6 +8,10 @@ var transitStopsMinimumWalkMinutes = {
 };
 // For transit predictions, transit alerts
 var transitRoutes = ['1', '701'];
+// Route-stop combinations to ignore for transit predictions
+var ignoredTransitRouteStops = {
+	'701': '97'
+};
 // For shared mobility status
 var sharedMobilityStations = {
 	'Bluebikes': ['26', '27', '29']
