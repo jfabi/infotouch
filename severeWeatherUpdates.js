@@ -45,7 +45,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     alertBackground = '';
                     alertTypeColors = '';
 
-                    if (alert['severity'] == 'Severe' && (alert['urgency'] == 'Expected' || alert['urgency'] == 'Immediate')) {
+                    if ((alert['severity'] == 'Severe' || alert['severity'] == 'Extreme') && (alert['urgency'] == 'Expected' || alert['urgency'] == 'Immediate')) {
                         alertBackground = 'weather-alert-severe';
                         alertTypeColors = 'weather-alert-severe-type';
                     } else {
@@ -68,7 +68,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
                     parsedWarning['html'] = htmlForWarning;
                     parsedWarnings.push(parsedWarning);
 
-                    if (parsedWarning['severity'] == 'Severe' && parsedWarning['urgency'] == 'Immediate') {
+                    if ((parsedWarning['severity'] == 'Severe' && parsedWarning['urgency'] == 'Immediate') || parsedWarning['severity'] == 'Extreme') {
                         currentSevereImmediateInternal = true;
 
                         if (newFooterWarningTitle == '') {
@@ -90,7 +90,7 @@ var severeWeatherUpdate = function nextServiceUpdate() {
 
                 for (i = 0; i < parsedWarnings.length; i++) {
                     var divId = 'severe-weather-' + parsedWarnings[i]['alertId'];
-                    supressDueToSevereImmediate = (parsedWarnings[i]['severity'] != 'Severe' || parsedWarnings[i]['urgency'] == 'Immediate') && currentSevereImmediate == true
+                    supressDueToSevereImmediate = ((parsedWarnings[i]['severity'] != 'Severe' && parsedWarnings[i]['severity'] != 'Extreme') || parsedWarnings[i]['urgency'] == 'Immediate') && currentSevereImmediate == true
 
                     if (document.getElementById(divId) == null && !supressDueToSevereImmediate) {
                         $('#main').append('<div id=' + divId + '></div>');
