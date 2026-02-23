@@ -65,11 +65,12 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         var routeId = allPredictions[i]['relationships']['route']['data']['id'];
                         var tripId = allPredictions[i]['relationships']['trip']['data']['id'];
                         var headsign = infoAboutTrips[tripId]['headsign'].replace("(Limited Stops)", "<small><i>(Limited)</i></small>");
-                        if (headsign == 'University Park') {
-                            continue;
-                        }
                         var crowding = '';
                         var crowdingImage = '';
+                        var ignoredTransitRouteStopsMap = new Map(Object.entries(ignoredTransitRouteStops));
+                        if (ignoredTransitRouteStopsMap.has(routeId) && ignoredTransitRouteStops.get(routeId) === stopId) {
+                            continue;
+                        }
                         if (allPredictions[i]['relationships']['vehicle']['data'] != null) {
                             var vehicleId = allPredictions[i]['relationships']['vehicle']['data']['id'];
                             crowding = infoAboutVehicles[vehicleId]['occupancyStatus'];
