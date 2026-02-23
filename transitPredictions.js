@@ -67,7 +67,8 @@ var transitPredictionsUpdate = function nextServiceUpdate() {
                         var headsign = infoAboutTrips[tripId]['headsign'].replace("(Limited Stops)", "<small><i>(Limited)</i></small>");
                         var crowding = '';
                         var crowdingImage = '';
-                        if (ignoredTransitRouteStops.has(routeId) && ignoredTransitRouteStops.get(routeId) === stopId) {
+                        var ignoredTransitRouteStopsMap = new Map(Object.entries(ignoredTransitRouteStops));
+                        if (ignoredTransitRouteStopsMap.has(routeId) && ignoredTransitRouteStops.get(routeId) === stopId) {
                             continue;
                         }
                         if (allPredictions[i]['relationships']['vehicle']['data'] != null) {
